@@ -9,14 +9,14 @@
 import PathKit
 
 enum JSONError: Error, LocalizedError {
-  case invalidFile(file: String, reason: String)
+  case invalidFile(reason: String)
   case missingProperties
   case missingTitle
 
   public var errorDescription: String? {
     switch self {
-    case .invalidFile(let file, reason: let reason):
-      return "Unable to parse file: \(file). \(reason)"
+    case .invalidFile(reason: let reason):
+      return "Unable to parse file. \(reason)"
     case .missingProperties:
       return "Missing property \"properties\" on json file"
     case .missingTitle:

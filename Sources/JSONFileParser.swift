@@ -21,13 +21,13 @@ public final class JSONFileParser {
     currentFile = path
     do {
       guard let json = try JSONSerialization.jsonObject(with: try path.read(), options: []) as? JSON else {
-        throw JSONError.invalidFile(file: path.string, reason: "Invalid structure.")
+        throw JSONError.invalidFile(reason: "Invalid structure.")
       }
       self.json = json
     } catch let error as JSONError {
       throw error
     } catch let error {
-      throw JSONError.invalidFile(file: path.string, reason: error.localizedDescription)
+      throw JSONError.invalidFile(reason: error.localizedDescription)
     }
   }
 }
