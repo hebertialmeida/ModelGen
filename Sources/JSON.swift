@@ -12,39 +12,46 @@ import StencilSwiftKit
 import SwiftGenKit
 
 var jsonAbsolutePath = Path()
+var currentFile = Path()
 
-let fileCommand = command(outputOption, templatePathOption, paramsOption, Argument<Path>("FILE", description: ".json file to parse.", validator: fileExists)) { output, templatePath, parameters, path in
-    do {
-      try parseObject(output: output, template: templatePath, parameters: parameters, path: path)
-    } catch let error {
-      printError(string: "error: \(error.localizedDescription)")
-    }
+fileprivate let fileArguments = Argument<Path>("FILE", description: ".json file to parse.", validator: fileExists)
+fileprivate let dirArguments = Argument<Path>("DIR", description: "A directory with .json files to parse.", validator: dirExists)
+
+let fileCommand = command(outputOption, templatePathOption, langOption, fileArguments) { output, templatePath, lang, path in
+  do {
+    try parseObject(output: output, template: templatePath, lang: lang, path: path)
+  } catch let error {
+    printError(error.localizedDescription, showFile: true)
+  }
+  printSuccess("Finished generation.")
 }
 
-let dirCommand = command(outputOption, templatePathOption, paramsOption, Argument<Path>("DIR", description: "A directory with .json files to parse.", validator: dirExists)) { output, templatePath, parameters, path in
+let dirCommand = command(outputOption, templatePathOption, langOption, dirArguments) { output, templatePath, lang, path in
   let paths = try path.children().filter { $0.extension == "json" }
 
   paths.forEach { path in
     do {
-      try parseObject(output: output, template: templatePath, parameters: parameters, path: path)
+      try parseObject(output: output, template: templatePath, lang: lang, path: path)
     } catch let error {
-      printError(string: "error: \(error.localizedDescription)")
+      printError(error.localizedDescription, showFile: true)
     }
   }
+  printSuccess("Finished generation of \(paths.count) files.")
 }
 
-func parseObject(output: OutputDestination, template: String, parameters: [String], path: Path) throws {
+func parseObject(output: OutputDestination, template: String, lang: String, path: Path) throws {
   let parser = JSONFileParser()
   var finalOutput = output
+  jsonAbsolutePath = Path(NSString(string: path.description).deletingLastPathComponent)
 
   do {
-    jsonAbsolutePath = Path(NSString(string: path.description).deletingLastPathComponent)
     try parser.parseFile(at: path)
 
+    let language = Language(rawValue: lang) ?? .swift
     let tempatePath = try validate(template)
     let template = try StencilSwiftTemplate(templateString: tempatePath.read(), environment: stencilSwiftEnvironment())
-    let context = try parser.stencilContext()
-    let enriched = try StencilContext.enrich(context: context, parameters: parameters)
+    let context = try parser.stencilContextFor(language)
+    let enriched = try StencilContext.enrich(context: context, parameters: [])
     let rendered = try template.render(enriched)
 
     let out = Path(output.description)
@@ -53,12 +60,12 @@ func parseObject(output: OutputDestination, template: String, parameters: [Strin
       return
     }
     guard let title = parser.json["title"] as? String else {
-      throw JSONFileParserError.missingTitle
+      throw JSONError.missingTitle
     }
-    let finalPath = Path(output.description) + "\(title.uppercaseFirst()).swift"
+    let finalPath = Path(output.description) + "\(title.uppercaseFirst() + language.fileExtension)"
     finalOutput = .file(finalPath)
     finalOutput.write(content: rendered, onlyIfChanged: true)
   } catch let error {
-    printError(string: "error: \(error.localizedDescription)")
+    printError(error.localizedDescription, showFile: true, file: path.description)
   }
 }

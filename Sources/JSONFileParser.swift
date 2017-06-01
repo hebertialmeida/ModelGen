@@ -11,23 +11,6 @@ import PathKit
 
 public typealias JSON = [String: Any]
 
-public enum JSONFileParserError: Error {
-  case invalidFile(reason: String)
-  case missingProperties
-  case missingTitle
-
-  public var localizedDescription: String {
-    switch self {
-    case .invalidFile(reason: let reason):
-      return "error: Unable to parse file. \(reason)"
-    case .missingProperties:
-      return "error: Missing \"properties\" on json file"
-    case .missingTitle:
-      return "error: Missing \"title\" on json file"
-    }
-  }
-}
-
 public final class JSONFileParser {
   public var json: JSON = [:]
   public var properties = [SchemaProperty]()
@@ -35,15 +18,16 @@ public final class JSONFileParser {
   public init() {}
 
   public func parseFile(at path: Path) throws {
+    currentFile = path
     do {
       guard let json = try JSONSerialization.jsonObject(with: try path.read(), options: []) as? JSON else {
-        throw JSONFileParserError.invalidFile(reason: "Invalid structure.")
+        throw JSONError.invalidFile(file: path.string, reason: "Invalid structure.")
       }
       self.json = json
-    } catch let error as JSONFileParserError {
+    } catch let error as JSONError {
       throw error
     } catch let error {
-      throw JSONFileParserError.invalidFile(reason: error.localizedDescription)
+      throw JSONError.invalidFile(file: path.string, reason: error.localizedDescription)
     }
   }
 }

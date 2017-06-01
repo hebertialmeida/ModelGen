@@ -14,19 +14,13 @@ import SwiftGenKit
 
 // MARK: - Common
 
-let templatePathOption = Option<String>(
-  "template", "", flag: "t",
-  description: "The path of the template to use for code generation."
-)
-
+let templatePathOption = Option<String>("template", "", flag: "t", description: "The path of the template to use for code generation.")
+let langOption = Option<String>("lang", "", flag: "l", description: "List of template parameters")
 let outputOption = Option(
-  "output", OutputDestination.console, flag: "o",
+  "output",
+  OutputDestination.console,
+  flag: "o",
   description: "The path to the file to generate (Omit to generate to stdout)"
-)
-
-let paramsOption = VariadicOption<String>(
-  "param", [],
-  description: "List of template parameters"
 )
 
 // MARK: - Main

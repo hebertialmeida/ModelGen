@@ -19,9 +19,18 @@ enum BaseType: Int {
   case date
 }
 
-public enum Language {
+public enum Language: String {
   case swift
   case objc
+
+  var fileExtension: String {
+    switch self {
+    case .swift:
+      return ".swift"
+    case .objc:
+      return ".m"
+    }
+  }
 }
 
 protocol LanguageType {

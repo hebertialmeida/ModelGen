@@ -9,28 +9,6 @@
 import Foundation
 import PathKit
 
-// MARK: - Error
-
-public enum SchemaError: Error {
-  case missingAdditionalProperties
-  case missingItems
-  case missingType
-  case invalidSchemaType(type: String)
-
-  public var localizedDescription: String {
-    switch self {
-    case .missingAdditionalProperties:
-      return "error: Missing \"additionalProperties\" for \"object\" type"
-    case .missingItems:
-      return "error: Missing \"items\" for \"array\" type"
-    case .missingType:
-      return "error: Missing type for object"
-    case .invalidSchemaType(let type):
-      return "error: Invalid \"\(type)\""
-    }
-  }
-}
-
 // MARK: Schema Types
 
 enum SchemaType: String {
@@ -137,8 +115,8 @@ struct Schema {
     let parser = JSONFileParser()
     do {
       try parser.parseFile(at: path)
-    } catch let error as NSError {
-      printError(string: "error: \(error.localizedDescription)")
+    } catch let error {
+      printError(error.localizedDescription, showFile: true)
     }
 
     guard let type = parser.json["title"] as? String else {

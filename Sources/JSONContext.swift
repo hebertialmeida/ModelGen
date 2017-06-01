@@ -9,10 +9,10 @@
 import Foundation
 
 extension JSONFileParser {
-  public func stencilContext() throws -> JSON {
+  public func stencilContextFor(_ language: Language) throws -> JSON {
     try dicToArray()
     try mapProperties()
-    try prepareContext()
+    try prepareContextFor(language)
 
     return [
       "spec": json,
@@ -24,13 +24,13 @@ extension JSONFileParser {
 
   private func dicToArray() throws {
     guard let items = json["properties"] as? JSON else {
-      throw JSONFileParserError.missingProperties
+      throw JSONError.missingProperties
     }
 
     var properties = [JSON]()
     for (key, value) in items {
       guard let value = value as? JSON else {
-        throw JSONFileParserError.missingProperties
+        throw JSONError.missingProperties
       }
       var nValue = value
       nValue["name"] = key
@@ -41,14 +41,14 @@ extension JSONFileParser {
 
   private func mapProperties() throws {
     guard let items = json["properties"] as? [JSON] else {
-      throw JSONFileParserError.missingProperties
+      throw JSONError.missingProperties
     }
     properties = try items.map { try SchemaProperty(dictionary: $0) }
   }
 
-  private func prepareContext() throws {
+  private func prepareContextFor(_ language: Language) throws {
     guard let items = json["properties"] as? [JSON] else {
-      throw JSONFileParserError.missingProperties
+      throw JSONError.missingProperties
     }
 
     var required = [String]()
@@ -60,11 +60,11 @@ extension JSONFileParser {
     var elements = items
     for index in elements.indices {
       guard let name = elements[index]["name"] as? String else {
-        throw JSONFileParserError.missingProperties
+        throw JSONError.missingProperties
       }
 
       let property = properties[index]
-      elements[index]["type"] = try Schema.matchTypeFor(property, language: .swift)
+      elements[index]["type"] = try Schema.matchTypeFor(property, language: language)
       elements[index]["name"] = fixVariableName(name)
       elements[index]["key"] = name
       elements[index]["required"] = required.contains(name)
@@ -74,8 +74,9 @@ extension JSONFileParser {
     json["properties"] = elements
   }
 
-  // MARK: Recursively check for nested objects
-
+  /// Recursively check for nested objects
+  ///
+  /// - Returns: `true` if has nested objects
   private func hasNestedObjects() -> Bool {
     var references = 0
     for property in properties {

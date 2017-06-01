@@ -38,10 +38,6 @@ extension Path: ArgumentConvertible {
 
 // MARK: Output (Path or Console) Argument
 
-func printError(string: String) {
-  fputs("\(string)\n", stderr)
-}
-
 enum OutputDestination: ArgumentConvertible {
   case console
   case file(Path)
@@ -66,33 +62,13 @@ enum OutputDestination: ArgumentConvertible {
     case .file(let path):
       do {
         if try onlyIfChanged && path.exists && path.read(.utf8) == content {
-          return print("Not writing the file as content is unchanged")
+          return print("✅  Unchanged: \(path)")
         }
         try path.write(content)
         print("✅  Generated: \(path)")
-      } catch let e as NSError {
-        printError(string: "❌  error: \(e)")
+      } catch let error {
+        printError(error.localizedDescription, showFile: true)
       }
-    }
-  }
-}
-
-// MARK: Template
-
-enum TemplateError: Error {
-  case templatePathNotFound(path: Path)
-  case noTemplateProvided
-
-  var localizedDescription: String {
-    switch self {
-    case .templatePathNotFound(let path):
-      return "Template not found at path \(path.description)."
-    case .noTemplateProvided:
-      return "A template must be chosen either via its name using the '-t' / '--template' option" +
-      " or via its path using the '-p' / '--templatePath' option.\n" +
-      "There's no 'default' template anymore: you can still access a bundled template but " +
-      "you have to explicitly specify its name using '-t'.\n" +
-      "To list all the available named templates, you can use the 'swiftgen templates list' command."
     }
   }
 }

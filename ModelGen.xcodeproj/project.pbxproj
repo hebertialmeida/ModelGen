@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A0BEDA81EDD2C0B006396DF /* ModelGenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0BEDA71EDD2C0B006396DF /* ModelGenTests.swift */; };
+		1A175EBA1EE04CE4007856E6 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A175EB91EE04CE4007856E6 /* Error.swift */; };
 		1A3964971EC39BCB00875EC0 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3964951EC39BCB00875EC0 /* JSON.swift */; };
 		1A3964981EC39BCB00875EC0 /* JSONFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3964961EC39BCB00875EC0 /* JSONFileParser.swift */; };
 		1A39649A1EC3A00000875EC0 /* JSONContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3964991EC3A00000875EC0 /* JSONContext.swift */; };
@@ -36,6 +37,7 @@
 		1A0BEDA51EDD2C0B006396DF /* ModelGenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ModelGenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0BEDA71EDD2C0B006396DF /* ModelGenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelGenTests.swift; sourceTree = "<group>"; };
 		1A0BEDA91EDD2C0B006396DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A175EB91EE04CE4007856E6 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		1A3964951EC39BCB00875EC0 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		1A3964961EC39BCB00875EC0 /* JSONFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONFileParser.swift; sourceTree = "<group>"; };
 		1A3964991EC3A00000875EC0 /* JSONContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONContext.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				1A3964961EC39BCB00875EC0 /* JSONFileParser.swift */,
 				1A3964991EC3A00000875EC0 /* JSONContext.swift */,
 				1A8722A81ECA433B006CA7C7 /* Schema.swift */,
+				1A175EB91EE04CE4007856E6 /* Error.swift */,
 				1A9203E31ECCE63000135434 /* LanguageType.swift */,
 				1A8722AA1ECA445C006CA7C7 /* Filters.swift */,
 				1A8722A61EC61849006CA7C7 /* String+Helpers.swift */,
@@ -330,6 +333,7 @@
 				1A3964971EC39BCB00875EC0 /* JSON.swift in Sources */,
 				1A8722AB1ECA445C006CA7C7 /* Filters.swift in Sources */,
 				1A3964981EC39BCB00875EC0 /* JSONFileParser.swift in Sources */,
+				1A175EBA1EE04CE4007856E6 /* Error.swift in Sources */,
 				1A8722A71EC61849006CA7C7 /* String+Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -531,6 +535,7 @@
 				1A0BEDAE1EDD2C0B006396DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		234F7E781DEBD5C5001B3C10 /* Build configuration list for PBXNativeTarget "modelgen" */ = {
 			isa = XCConfigurationList;
