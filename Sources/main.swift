@@ -12,10 +12,10 @@ import Stencil
 import StencilSwiftKit
 import SwiftGenKit
 
-// MARK: - Common
+// MARK: Common
 
 let templatePathOption = Option<String>("template", "", flag: "t", description: "The path of the template to use for code generation.")
-let langOption = Option<String>("lang", "", flag: "l", description: "List of template parameters")
+let langOption = Option<String>("lang", "", flag: "l", description: "The output language e.g: swift, objc")
 let outputOption = Option(
   "output",
   OutputDestination.console,
@@ -23,7 +23,7 @@ let outputOption = Option(
   description: "The path to the file to generate (Omit to generate to stdout)"
 )
 
-// MARK: - Main
+// MARK: Main
 
 let main = Group {
   $0.addCommand("file", "generate models based JSON Spec file", fileCommand)

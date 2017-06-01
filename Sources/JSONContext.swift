@@ -74,9 +74,7 @@ extension JSONFileParser {
     json["properties"] = elements
   }
 
-  /// Recursively check for nested objects
-  ///
-  /// - Returns: `true` if has nested objects
+  // MARK: Recursively check for nested objects
   private func hasNestedObjects() -> Bool {
     var references = 0
     for property in properties {
