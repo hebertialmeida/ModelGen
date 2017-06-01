@@ -36,7 +36,7 @@ namespace :cli do
     Utils.run(
       %Q(xcodebuild -workspace "#{WORKSPACE}.xcworkspace" -scheme "#{SCHEME_NAME}" -configuration "#{CONFIGURATION}") +
       %Q( -derivedDataPath "#{BUILD_DIR}") +
-      %Q( SWIFTGEN_OTHER_LDFLAGS="-sectcreate __TEXT __info_plist #{plist_file.shellescape}"),
+      %Q( MODELGEN_OTHER_LDFLAGS="-sectcreate __TEXT __info_plist #{plist_file.shellescape}"),
       task, xcrun: true, formatter: :xcpretty)
   end
 

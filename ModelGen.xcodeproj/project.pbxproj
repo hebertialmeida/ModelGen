@@ -189,7 +189,7 @@
 			dependencies = (
 			);
 			name = modelgen;
-			productName = swiftgen;
+			productName = modelgen;
 			productReference = 234F7E6E1DEBD5C5001B3C10 /* modelgen.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -487,7 +487,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"$(SWIFTGEN_OTHER_LDFLAGS)",
+					"$(MODELGEN_OTHER_LDFLAGS)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hebertialmeida.modelgen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -509,7 +509,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"$(SWIFTGEN_OTHER_LDFLAGS)",
+					"$(MODELGEN_OTHER_LDFLAGS)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hebertialmeida.modelgen;
 				PRODUCT_NAME = "$(TARGET_NAME)";
