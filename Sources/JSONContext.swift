@@ -72,6 +72,12 @@ extension JSONFileParser {
       elements[index]["nestedObject"] = hasNestedObjects(property)
     }
     json["properties"] = elements
+    json["modifiedProperties"] = elements.filter({
+      guard let name = $0["name"] as? String, let key = $0["key"] as? String else {
+        return false
+      }
+      return name != key
+    })
   }
 
   // MARK: Recursively check for nested objects
