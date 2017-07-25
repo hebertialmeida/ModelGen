@@ -12,7 +12,3 @@ target 'modelgen' do
   pod 'Commander', '~> 0.6.0', :inhibit_warnings => true
   common_pods
 end
-
-target 'UnitTests' do
-  common_pods
-end
