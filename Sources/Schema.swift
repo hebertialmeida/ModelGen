@@ -74,6 +74,22 @@ struct Schema {
     return try matchTypeFor(schemaType, property: property, language: language)
   }
 
+  static func matchRefType(_ ref: String) -> String {
+    let absolute = NSString(string: jsonAbsolutePath.description).appendingPathComponent(ref)
+    let path = Path(absolute)
+    let parser = JSONFileParser()
+    do {
+      try parser.parseFile(at: path)
+    } catch let error {
+      printError(error.localizedDescription, showFile: true)
+    }
+
+    guard let type = parser.json["title"] as? String else {
+      return ""
+    }
+    return type.uppercaseFirst()
+  }
+
   private static func matchTypeFor(_ format: StringFormatType, language: Language) -> String {
     switch format {
     case .uri:
@@ -107,22 +123,6 @@ struct Schema {
     case .boolean:
       return typeFor(language, baseType: .boolean)
     }
-  }
-
-  private static func matchRefType(_ ref: String) -> String {
-    let absolute = NSString(string: jsonAbsolutePath.description).appendingPathComponent(ref)
-    let path = Path(absolute)
-    let parser = JSONFileParser()
-    do {
-      try parser.parseFile(at: path)
-    } catch let error {
-      printError(error.localizedDescription, showFile: true)
-    }
-
-    guard let type = parser.json["title"] as? String else {
-      return ""
-    }
-    return type.uppercaseFirst()
   }
 
   private static func typeFor(_ language: Language, baseType: BaseType) -> String {

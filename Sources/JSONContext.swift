@@ -70,6 +70,13 @@ extension JSONFileParser {
       elements[index]["required"] = required.contains(name)
       elements[index]["array"] = property.type == "array"
       elements[index]["nestedObject"] = hasNestedObjects(property)
+
+      if let ref = property.ref {
+        elements[index]["refType"] = Schema.matchRefType(ref)
+      }
+      if let ref = property.items?.ref {
+        elements[index]["refType"] = Schema.matchRefType(ref)
+      }
     }
     json["properties"] = elements
     json["modifiedProperties"] = elements.filter({
