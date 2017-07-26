@@ -44,7 +44,6 @@ func fixVariableName(_ variableName: String) -> String {
 /// - Returns: New name for the variable.
 func replaceKeywords(_ currentName: String) -> String {
   let keywordsWithReplacements = [
-    "description": "descriptionValue",
     "class": "classProperty",
     "struct": "structProperty",
     "enum": "enumProperty",
