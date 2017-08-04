@@ -9,7 +9,12 @@
 import Commander
 import PathKit
 
-// MARK: Validators
+// MARK: - Global
+
+var jsonAbsolutePath = Path()
+var currentFile = Path()
+
+// MARK: - Validators
 
 func checkPath(type: String, assertion: @escaping (Path) -> Bool) -> ((Path) throws -> Path) {
   return { (path: Path) throws -> Path in
@@ -25,7 +30,7 @@ let pathsExist = { (paths: [Path]) throws -> [Path] in try paths.map(pathExists)
 let filesExist = { (paths: [Path]) throws -> [Path] in try paths.map(fileExists) }
 let dirsExist = { (paths: [Path]) throws -> [Path] in try paths.map(dirExists) }
 
-// MARK: Path as Input Argument
+// MARK: - Path as Input Argument
 
 extension Path: ArgumentConvertible {
   public init(parser: ArgumentParser) throws {
@@ -36,7 +41,7 @@ extension Path: ArgumentConvertible {
   }
 }
 
-// MARK: Output (Path or Console) Argument
+// MARK: - Output (Path or Console) Argument
 
 enum OutputDestination: ArgumentConvertible {
   case console

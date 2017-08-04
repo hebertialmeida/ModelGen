@@ -77,7 +77,7 @@ struct Schema {
   static func matchRefType(_ ref: String) -> String {
     let absolute = NSString(string: jsonAbsolutePath.description).appendingPathComponent(ref)
     let path = Path(absolute)
-    let parser = JSONFileParser()
+    let parser = JsonParser()
     do {
       try parser.parseFile(at: path)
     } catch let error {

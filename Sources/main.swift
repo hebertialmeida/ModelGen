@@ -8,31 +8,61 @@
 
 import Commander
 import PathKit
-import Stencil
-import StencilSwiftKit
-import SwiftGenKit
 
-// MARK: Common
+// MARK: - Options
 
-let templatePathOption = Option<String>("template", "", flag: "t", description: "The path of the template to use for code generation.")
-let langOption = Option<String>("lang", "", flag: "l", description: "The output language e.g: swift, objc")
-let outputOption = Option(
-  "output",
-  OutputDestination.console,
-  flag: "o",
-  description: "The path to the file to generate (Omit to generate to stdout)"
-)
+let specOption = Option<Path>("spec", Path(), flag: "s", description: "The spec folder or file path e.g: ./specs or user.json", validator: pathExists)
+let templateOption = Option<String>("template", "", flag: "t", description: "The path of the template to use for code generation.")
+let languageOption = Option<String>("language", Language.swift.rawValue, flag: "l", description: "The output language e.g: swift")
+let outputOption = Option<OutputDestination>("output", .console, flag: "o", description: "The path to the file to generate (Omit to generate to stdout)")
 
-// MARK: Main
-
-let main = Group {
-  $0.addCommand("file", "generate models based JSON Spec file", fileCommand)
-  $0.addCommand("dir", "generate models based JSON Spec folder", dirCommand)
-}
+// MARK: - Version
 
 let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.0"
-let stencilVersion = Bundle(for: Stencil.Template.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
-let stencilSwiftKitVersion = Bundle(for: StencilSwiftKit.StencilSwiftTemplate.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
-let swiftGenKitVersion = Bundle(for: SwiftGenKit.AssetsCatalogParser.self).infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.0"
 
-main.run("ModelGen v\(version) (" + "Stencil v\(stencilVersion), " + "StencilSwiftKit v\(stencilSwiftKitVersion), " + "SwiftGenKit v\(swiftGenKitVersion))")
+// MARK: - Main
+
+command(outputOption, templateOption, languageOption, specOption) { output, templatePath, lang, path in
+  guard path.string.isEmpty else {
+    do {
+      try parse(output: output, template: templatePath, lang: lang, path: path)
+    } catch {
+      printError(error.localizedDescription)
+    }
+    return
+  }
+
+  let yamlPath = Path(".modelgen.yml")
+
+  do {
+    let yamlContents = try yamlPath.read(.utf8)
+    let dict = try YamlParser.parse(yamlContents)
+    guard let config = Configuration(dictionary: dict) else {
+      printError("Error creating configuration")
+      exit(1)
+    }
+
+    guard let configSpec = config.spec else {
+      printError(YamlParserError.missingSpecPath.localizedDescription)
+      exit(1)
+    }
+
+    guard let configTemplate = config.template else {
+      printError(YamlParserError.missingTemplate.localizedDescription)
+      exit(1)
+    }
+
+    var configOutput: OutputDestination {
+      guard let output = config.output else {
+        return .console
+      }
+      return OutputDestination.file(Path(output))
+    }
+
+    try render(output: configOutput, template: configTemplate, lang: config.language ?? Language.swift.rawValue, path: Path(configSpec))
+    exit(0)
+  } catch {
+    printError(error.localizedDescription)
+  }
+
+}.run("ModelGen v\(version)")

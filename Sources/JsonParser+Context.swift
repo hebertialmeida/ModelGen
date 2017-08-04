@@ -1,5 +1,5 @@
 //
-//  JSONContext.swift
+//  JsonParser+Context.swift
 //  ModelGen
 //
 //  Created by Heberti Almeida on 2017-05-10.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension JSONFileParser {
+extension JsonParser {
   public func stencilContextFor(_ language: Language) throws -> JSON {
     try dicToArray()
     try mapProperties()
@@ -24,13 +24,13 @@ extension JSONFileParser {
 
   private func dicToArray() throws {
     guard let items = json["properties"] as? JSON else {
-      throw JSONError.missingProperties
+      throw JsonParserError.missingProperties
     }
 
     var properties = [JSON]()
     for (key, value) in items {
       guard let value = value as? JSON else {
-        throw JSONError.missingProperties
+        throw JsonParserError.missingProperties
       }
       var nValue = value
       nValue["name"] = key
@@ -41,14 +41,14 @@ extension JSONFileParser {
 
   private func mapProperties() throws {
     guard let items = json["properties"] as? [JSON] else {
-      throw JSONError.missingProperties
+      throw JsonParserError.missingProperties
     }
     properties = try items.map { try SchemaProperty(dictionary: $0) }
   }
 
   private func prepareContextFor(_ language: Language) throws {
     guard let items = json["properties"] as? [JSON] else {
-      throw JSONError.missingProperties
+      throw JsonParserError.missingProperties
     }
 
     var required = [String]()
@@ -60,7 +60,7 @@ extension JSONFileParser {
     var elements = items
     for index in elements.indices {
       guard let name = elements[index]["name"] as? String else {
-        throw JSONError.missingProperties
+        throw JsonParserError.missingProperties
       }
 
       let property = properties[index]

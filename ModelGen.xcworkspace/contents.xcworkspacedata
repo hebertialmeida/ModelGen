@@ -23,7 +23,4 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:ModelGen.xcodeproj">
-   </FileRef>
 </Workspace>

@@ -8,7 +8,7 @@
 
 import PathKit
 
-enum JSONError: Error, LocalizedError {
+enum JsonParserError: Error, LocalizedError {
   case invalidFile(reason: String)
   case missingProperties
   case missingTitle
@@ -21,6 +21,23 @@ enum JSONError: Error, LocalizedError {
       return "Missing property \"properties\" on json file"
     case .missingTitle:
       return "Missing property \"title\" on json file"
+    }
+  }
+}
+
+enum YamlParserError: Error, LocalizedError {
+  case invalidFile(reason: String)
+  case missingSpecPath
+  case missingTemplate
+
+  public var errorDescription: String? {
+    switch self {
+    case .invalidFile(reason: let reason):
+      return "Unable to parse file. \(reason)"
+    case .missingSpecPath:
+      return "You must provide the spec folder or file"
+    case .missingTemplate:
+      return "You must provide a Stencil template"
     }
   }
 }

@@ -9,6 +9,7 @@ PODS:
   - SwiftGenKit (2.0.0):
     - Kanna
     - PathKit (~> 0.8.0)
+  - Yams (0.3.3)
 
 DEPENDENCIES:
   - Commander (~> 0.6.0)
@@ -16,6 +17,7 @@ DEPENDENCIES:
   - Stencil (~> 0.9.0)
   - StencilSwiftKit (~> 2.0.0)
   - SwiftGenKit (~> 2.0.0)
+  - Yams (~> 0.3)
 
 SPEC CHECKSUMS:
   Commander: fba7c96c9e787ecc8ebe0737be875e1e18ef47ff
@@ -24,7 +26,8 @@ SPEC CHECKSUMS:
   Stencil: 510f0b0518a366b67b6a9c5085a0399741b6d2f9
   StencilSwiftKit: b7a2b68d14544d510f21cf034f550cf07bb119bc
   SwiftGenKit: cc5442a21a4567c85d37bcf93f307b8fc2416c8f
+  Yams: 4a1426d0192e63d5a202592ae9ccc835447bdfe3
 
-PODFILE CHECKSUM: c38658d57f1aa54ffe6f7e498787d2bcf4c88b13
+PODFILE CHECKSUM: a9a113f6e9f10361a67268a0e13df9db10f0b446
 
 COCOAPODS: 1.2.1
