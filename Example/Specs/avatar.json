@@ -1,0 +1,9 @@
+{
+  "title": "Avatar",
+  "type": "object",
+  "properties": {
+    "original": {"type": "string", "format": "uri"},
+    "small": {"type": "string", "format": "uri"}
+  },
+  "required": []
+}

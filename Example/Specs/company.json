@@ -1,0 +1,13 @@
+{
+  "title": "Company",
+  "type": "object",
+  "description": "Definition of a Company",
+  "identifier": "id",
+  "properties": {
+    "id": {"type": "integer"},
+    "name": {"type": "string"},
+    "logo": {"type": "string", "format": "uri"},
+    "subdomain": {"type": "string"}
+  },
+  "required": ["id", "name", "subdomain"]
+}
