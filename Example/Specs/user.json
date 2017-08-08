@@ -5,15 +5,15 @@
   "identifier": "id",
   "properties": {
     "id": {"type": "integer"},
-	  "full_name": {"type": "string"},
-  	"email": {"type": "string"},
-  	"timezone": {"type": "string"},
-  	"current_company_id": {"type": "integer"},
+    "full_name": {"type": "string"},
+    "email": {"type": "string"},
+    "timezone": {"type": "string"},
+    "current_company_id": {"type": "integer"},
     "created_at": {"type": "string", "format": "date"},
-  	"companies": {
-  		"type": "array",
-  		"items": {"$ref": "company.json"}
-  	},
+    "companies": {
+      "type": "array",
+      "items": {"$ref": "company.json"}
+    },
     "avatar": {"$ref": "avatar.json"}
   },
   "required": ["id", "full_name", "email", "current_company_id", "created_at", "companies", "avatar"]
