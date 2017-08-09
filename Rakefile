@@ -13,6 +13,8 @@ POD_NAME = 'ModelGen'
 
 BUILD_DIR = File.absolute_path('./build')
 BIN_NAME = 'modelgen'
+BINARIES_FOLDER = '/usr/local/bin'
+FRAMEWORKS_FOLDER = '/usr/local/Frameworks'
 
 
 ## [ Utils ] ##################################################################
@@ -42,30 +44,53 @@ namespace :cli do
 
   desc "Install the binary in $bindir, frameworks in $fmkdir\n" \
        "(defaults $bindir=./build/modelgen/bin/, $fmkdir=$bindir/../lib"
-  task :install, [:bindir, :fmkdir] => :build do |task, args|
+  task :install, [:bindir, :fmkdir] => [:uninstall, :build] do |task, args|
     (bindir, fmkdir) = defaults(args)
     generated_bundle_path = "#{BUILD_DIR}/Build/Products/#{CONFIGURATION}/modelgen.app/Contents"
 
-    Utils.print_header "Installing binary in #{bindir}"
+    Utils.print_header "Installing binary in #{BINARIES_FOLDER}"
     Utils.run([
       %Q(mkdir -p "#{bindir}"),
       %Q(cp -f "#{generated_bundle_path}/MacOS/modelgen" "#{bindir}/#{BIN_NAME}"),
     ], task, 'copy_binary')
 
-    Utils.print_header "Installing frameworks in #{fmkdir}"
+    Utils.print_header "Installing frameworks in #{FRAMEWORKS_FOLDER}"
     Utils.run([
       %Q(if [ -d "#{fmkdir}" ]; then rm -rf "#{fmkdir}"; fi),
       %Q(mkdir -p "#{fmkdir}"),
       %Q(cp -fR "#{generated_bundle_path}/Frameworks/" "#{fmkdir}"),
+      %Q(cp -fR "#{bindir}/#{BIN_NAME}" "#{BINARIES_FOLDER}/#{BIN_NAME}"),
+      %Q(cp -Rf "#{fmkdir}/." "#{FRAMEWORKS_FOLDER}/"),
     ], task, 'copy_frameworks')
 
-    Utils.print_header "Fixing binary's @rpath"
+    Utils.print_info "Finished installing. You can now use modelgen"
+  end
+
+  desc "Uninstall\n"
+  task :uninstall do
+    Utils.print_header "Remove previous versions"
     Utils.run([
-      %Q(install_name_tool -delete_rpath "@executable_path/../Frameworks" "#{bindir}/#{BIN_NAME}"),
-      %Q(install_name_tool -add_rpath "@executable_path/#{fmkdir.relative_path_from(bindir)}" "#{bindir}/#{BIN_NAME}"),
-    ], task, 'fix_rpath', xcrun: true)
-   
-    Utils.print_info "Finished installing. Binary is available in: #{bindir}"
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Commander.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Kanna.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/PathKit.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Stencil.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/StencilSwiftKit.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/SwiftGenKit.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Yams.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftAppKit.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCore.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreData.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreGraphics.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreImage.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDarwin.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDispatch.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftFoundation.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftIOKit.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftObjectiveC.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftQuartzCore.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftXPC.dylib"),
+      %Q(rm -f "#{BINARIES_FOLDER}/#{BIN_NAME}")
+    ], task, 'uninstall')
   end
 
   desc "Delete the build directory\n" \
@@ -75,33 +100,4 @@ namespace :cli do
   end
 end
 
-task :default => 'cli:build'
-
-## [ ChangeLog ] ##############################################################
-
-namespace :changelog do
-  LINKS_SECTION_TITLE = 'Changes in other ModelGen modules'
-
-  desc 'Add links to other CHANGELOGs in the topmost ModelGen CHANGELOG entry'
-  task :links do
-    changelog = File.read('CHANGELOG.md')
-    abort('Links seems to already exist for latest version entry') if /^### (.*)/.match(changelog)[1] == LINKS_SECTION_TITLE
-    links = linked_changelogs(
-      swiftgenkit: Utils.podfile_lock_version('SwiftGenKit'),
-      stencilswiftkit: Utils.podfile_lock_version('StencilSwiftKit'),
-      stencil: Utils.podfile_lock_version('Stencil') { `git describe --abbrev=0 --tags`.chomp }
-    )
-    changelog.sub!(/^##[^#].*$\n/, "\\0\n#{links}")
-    File.write('CHANGELOG.md', changelog)
-  end
-
-  def linked_changelogs(swiftgenkit: nil, stencilswiftkit: nil, stencil: nil, templates: nil)
-    return <<-LINKS.gsub(/^\s*\|/,'')
-      |### #{LINKS_SECTION_TITLE}
-      |
-      |* [SwiftGenKit #{swiftgenkit}](https://github.com/SwiftGen/SwiftGenKit/blob/#{swiftgenkit}/CHANGELOG.md)
-      |* [StencilSwiftKit #{stencilswiftkit}](https://github.com/SwiftGen/StencilSwiftKit/blob/#{stencilswiftkit}/CHANGELOG.md)
-      |* [Stencil #{stencil}](https://github.com/kylef/Stencil/blob/#{stencil}/CHANGELOG.md)
-    LINKS
-  end
-end
+task :default => 'cli:install'
