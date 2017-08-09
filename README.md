@@ -10,7 +10,9 @@ The Models are defined in JSON, based on JSON-Schema but not limited to, basical
 
 For now you can build from source:
 ```sh
-$ rake cli:install
+$ git clone https://github.com/hebertialmeida/ModelGen.git
+$ cd ModelGen
+$ pod install && rake cli:install
 ```
 
 ## Getting Started
