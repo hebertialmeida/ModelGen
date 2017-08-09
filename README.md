@@ -1,9 +1,10 @@
 # ModelGen
 
-ModelGen is a command-line tool for generating Swift models from JSON Schemas. Unlike most of the model generator it works with two files, the `.json` and `.stencil` so you have full control on how you want your models to look like, also if you want to refactor all your models it is simple as changing the template and regenerate them. It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
+ModelGen is a command-line tool for generating Swift models from JSON Schemas. Unlike most of the model generators, it works with two files, the `.json` and `.stencil` so you have full control on how you want your models to look like, also if you want to refactor all your models it is simple as changing the template and regenerate them. It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
 
 #### Schema-defined
-The Models are defined in JSON, based on JSON-Schema but not limited to, basically anything you add on schema you can use on template. It is a extensible and language-independent specification.
+
+The Models are defined in JSON, based on JSON-Schema but not limited to, basically anything you add on schema you can use the template. It is an extensible and language-independent specification.
 
 ## Installation
 
@@ -14,7 +15,7 @@ $ rake cli:install
 
 ## Getting Started
 
-
+Take a look at [Example](/Example) folder.
 
 ## Defining a schema
 
