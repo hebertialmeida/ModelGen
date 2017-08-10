@@ -161,9 +161,16 @@ public func == (lhs: Company, rhs: Company) -> Bool {
 }
 ```
 
-## Contributing
+## Attributions
 
-Pull requests for bug fixes and features welcomed.
+This tool is powered by:
+
+- [Stencil](https://github.com/kylef/Stencil) and few other libs by [Kyle Fuller](https://github.com/kylef)
+- [SwiftGenKit](https://github.com/SwiftGen/SwiftGenKit) and [StencilSwiftKit](https://github.com/SwiftGen/StencilSwiftKit), by [SwiftGen](https://github.com/SwiftGen/)
+
+The inital concept was based on [Peter Livesey's](https://github.com/plivesey) [pull request](https://github.com/SwiftGen/SwiftGen/pull/188) and inspired by [plank](https://github.com/pinterest/plank) from Pinterest.
+
+If you want to contribute, don't hesitate to open an pull Request.
 
 ## License
 
