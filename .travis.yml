@@ -4,7 +4,8 @@ cache: cocoapods
 podfile: Podfile
 
 before_install:
-  - pod install --repo-update
+  - bundle install
+  - bundle exec pod install --repo-update
 
 script:
   - rake cli:build
