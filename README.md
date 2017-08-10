@@ -64,9 +64,6 @@ ModelGen takes a template to generate in the format you want.
 /// {{ spec.description }}
 {% endif %}
 public struct {{ spec.title }}: Equatable {
-
-    // MARK: Instance Variables
-
 {% for property in spec.properties %}
 {% if property.doc %}
     /**
@@ -137,9 +134,6 @@ $ modelgen --spec company.json --template template.stencil --output Company.swif
 
 /// Definition of a Company
 public struct Company: Equatable {
-
-    // MARK: Instance Variables
-
     public let subdomain: String
     public let name: String
     public let logo: URL?
