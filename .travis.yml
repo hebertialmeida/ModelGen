@@ -1,0 +1,10 @@
+osx_image: xcode8.3
+language: objective-c
+cache: cocoapods
+podfile: Podfile
+
+before_install:
+  - pod install --repo-update
+
+script:
+  - rake cli:build
