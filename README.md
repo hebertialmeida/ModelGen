@@ -4,7 +4,7 @@
 
 ## Why?
 
-Models are usually boilerplate code that, why not generate them and forgot? It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
+Models are usually boilerplate code, why not generate them and forgot? It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
 
 This means that adding a property to a data object is truly a one-line change — no copy-paste required. If you want to refactor all your models it is simple as changing the template and regenerate them.
 
