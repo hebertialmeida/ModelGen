@@ -1,10 +1,6 @@
 # ModelGen 🎰
 
-Automate all the things!
-
-## What is ModelGen?
-
-ModelGen is a command-line tool for generating models from JSON Schemas. 
+**ModelGen** is a command-line tool for generating models from JSON Schemas. 
 
 ## Why?
 
@@ -18,6 +14,10 @@ Unlike most of the model generators, it works with two files, the `.json` and [`
 
 The Models are defined in JSON, based on JSON Schema but not limited to, basically anything you add on schema you can use the template. It is an extensible and language-independent specification.
 
+## Examples?
+
+Take a look at [Example](/Example) folder.
+
 ## Installation
 
 For now you can build from source:
@@ -26,10 +26,6 @@ $ git clone https://github.com/hebertialmeida/ModelGen.git
 $ cd ModelGen
 $ pod install && rake cli:install
 ```
-
-## Examples?
-
-Take a look at [Example](/Example) folder.
 
 ## Defining a schema
 
@@ -116,16 +112,16 @@ And then:
 $ modelgen
 ```
 
-Or to generate a single file:
- 
-```sh
-$ modelgen --spec company.json --template template.stencil --output Company.json
-```
-
 Generate from a directory:
 
 ```sh
-$ modelgen -s ./Specs -t template.stencil -o ./Models
+$ modelgen --spec ./Specs --template template.stencil --output ./Model
+```
+
+Generate a single file:
+ 
+```sh
+$ modelgen --spec company.json --template template.stencil --output Company.swift
 ```
 
 ## Generated output
