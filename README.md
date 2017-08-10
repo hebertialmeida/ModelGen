@@ -170,7 +170,7 @@ This tool is powered by:
 
 The inital concept was based on [Peter Livesey's](https://github.com/plivesey) [pull request](https://github.com/SwiftGen/SwiftGen/pull/188) and inspired by [plank](https://github.com/pinterest/plank) from Pinterest.
 
-If you want to contribute, don't hesitate to open an pull Request.
+If you want to contribute, don't hesitate to open an pull request.
 
 ## License
 
