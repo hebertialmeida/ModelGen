@@ -109,6 +109,8 @@ And then:
 $ modelgen
 ```
 
+#### Without the `.modelgen.yml` file
+
 Generate from a directory:
 
 ```sh
