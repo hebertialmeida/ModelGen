@@ -1,6 +1,5 @@
 #!/usr/bin/rake
 require 'pathname'
-require 'yaml'
 require 'shellwords'
 
 
@@ -13,15 +12,15 @@ POD_NAME = 'ModelGen'
 
 BUILD_DIR = File.absolute_path('./build')
 BIN_NAME = 'modelgen'
-BINARIES_FOLDER = '/usr/local/bin'
-FRAMEWORKS_FOLDER = '/usr/local/Frameworks'
+# BINARIES_FOLDER = '/usr/local/bin'
+# FRAMEWORKS_FOLDER = '/usr/local/Frameworks'
 
 
 ## [ Utils ] ##################################################################
 
 def defaults(args)
   bindir = args.bindir.nil? || args.bindir.empty? ? (Pathname.new(BUILD_DIR) + 'modelgen/bin') : Pathname.new(args.bindir)
-  fmkdir = args.fmkdir.nil? || args.fmkdir.empty? ? bindir + '../lib' : Pathname.new(args.fmkdir)
+  fmkdir = args.fmkdir.nil? || args.fmkdir.empty? ? bindir + '../Frameworks' : Pathname.new(args.fmkdir)
   [bindir, fmkdir].map(&:expand_path)
 end
 
@@ -34,7 +33,7 @@ namespace :cli do
     (bindir, _) = defaults(args)
     
     Utils.print_header "Building Binary"
-    plist_file = (Pathname.new(BUILD_DIR) + "Build/Products/#{CONFIGURATION}/modelgen.app/Contents/Info.plist").to_s
+    plist_file = (Pathname.new(BUILD_DIR) + "Build/Products/#{CONFIGURATION}/#{BIN_NAME}.app/Contents/Info.plist").to_s
     Utils.run(
       %Q(xcodebuild -workspace "#{WORKSPACE}.xcworkspace" -scheme "#{SCHEME_NAME}" -configuration "#{CONFIGURATION}") +
       %Q( -derivedDataPath "#{BUILD_DIR}") +
@@ -43,52 +42,30 @@ namespace :cli do
   end
 
   desc "Install the binary in $bindir, frameworks in $fmkdir\n" \
-       "(defaults $bindir=./build/modelgen/bin/, $fmkdir=$bindir/../lib"
-  task :install, [:bindir, :fmkdir] => [:uninstall, :build] do |task, args|
+       "(defaults $bindir=./build/#{BIN_NAME}/bin/, $fmkdir=$bindir/../Frameworks"
+  task :install, [:bindir, :fmkdir] => :build do |task, args|
     (bindir, fmkdir) = defaults(args)
-    generated_bundle_path = "#{BUILD_DIR}/Build/Products/#{CONFIGURATION}/modelgen.app/Contents"
+    generated_bundle_path = "#{BUILD_DIR}/Build/Products/#{CONFIGURATION}/#{BIN_NAME}.app/Contents"
 
-    Utils.print_header "Installing binary in #{BINARIES_FOLDER}"
+    Utils.print_header "Installing binary in #{bindir}"
     Utils.run([
       %Q(mkdir -p "#{bindir}"),
-      %Q(cp -f "#{generated_bundle_path}/MacOS/modelgen" "#{bindir}/#{BIN_NAME}"),
+      %Q(cp -f "#{generated_bundle_path}/MacOS/#{BIN_NAME}" "#{bindir}/#{BIN_NAME}"),
     ], task, 'copy_binary')
 
-    Utils.print_header "Installing frameworks in #{FRAMEWORKS_FOLDER}"
+    Utils.print_header "Installing frameworks in #{fmkdir}"
     Utils.run([
       %Q(if [ -d "#{fmkdir}" ]; then rm -rf "#{fmkdir}"; fi),
       %Q(mkdir -p "#{fmkdir}"),
       %Q(cp -fR "#{generated_bundle_path}/Frameworks/" "#{fmkdir}"),
-      %Q(cp -fR "#{bindir}/#{BIN_NAME}" "#{BINARIES_FOLDER}/#{BIN_NAME}"),
-      %Q(cp -Rf "#{fmkdir}/." "#{FRAMEWORKS_FOLDER}/"),
     ], task, 'copy_frameworks')
 
-    Utils.print_info "Finished installing. You can now use modelgen"
-  end
+    # Utils.print_header "Add Symbolic link"
+    # Utils.run([
+    #   %Q(ln -s "#{bindir}/#{BIN_NAME}" "#{BINARIES_FOLDER}/#{BIN_NAME}")
+    # ], task, 'symbolic_link')
 
-  desc "Uninstall\n"
-  task :uninstall do
-    Utils.print_header "Remove previous versions"
-    Utils.run([
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Commander.framework"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/PathKit.framework"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Stencil.framework"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/StencilSwiftKit.framework"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Yams.framework"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftAppKit.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCore.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreData.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreGraphics.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreImage.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDarwin.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDispatch.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftFoundation.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftIOKit.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftObjectiveC.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftQuartzCore.dylib"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftXPC.dylib"),
-      %Q(rm -f "#{BINARIES_FOLDER}/#{BIN_NAME}")
-    ], task, 'uninstall')
+    Utils.print_info "Finished installing. Binary is available in: #{bindir}"
   end
 
   desc "Delete the build directory\n" \
@@ -96,6 +73,31 @@ namespace :cli do
   task :clean do
     sh %Q(rm -fr #{BUILD_DIR})
   end
+
+  # desc "Uninstall\n"
+  # task :uninstall do
+  #   Utils.print_header "Remove previous versions"
+  #   Utils.run([
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Commander.framework"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/PathKit.framework"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Stencil.framework"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/StencilSwiftKit.framework"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Yams.framework"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftAppKit.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCore.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreData.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreGraphics.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreImage.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDarwin.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDispatch.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftFoundation.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftIOKit.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftObjectiveC.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftQuartzCore.dylib"),
+  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftXPC.dylib"),
+  #     %Q(rm -f "#{BINARIES_FOLDER}/#{BIN_NAME}")
+  #   ], task, 'uninstall')
+  # end
 end
 
-task :default => 'cli:install'
+task :default => 'cli:build'
