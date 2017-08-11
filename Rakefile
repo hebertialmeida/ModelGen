@@ -12,7 +12,7 @@ POD_NAME = 'ModelGen'
 
 BUILD_DIR = File.absolute_path('./build')
 BIN_NAME = 'modelgen'
-# BINARIES_FOLDER = '/usr/local/bin'
+BINARIES_FOLDER = '/usr/local/bin'
 # FRAMEWORKS_FOLDER = '/usr/local/Frameworks'
 
 
@@ -66,10 +66,10 @@ namespace :cli do
       %Q(install_name_tool -add_rpath "@executable_path/#{fmkdir.relative_path_from(bindir)}" "#{bindir}/#{BIN_NAME}"),
     ], task, 'fix_rpath', xcrun: true)
   
-    # Utils.print_header "Add Symbolic link"
-    # Utils.run([
-    #   %Q(ln -s "#{bindir}/#{BIN_NAME}" "#{BINARIES_FOLDER}/#{BIN_NAME}")
-    # ], task, 'symbolic_link')
+    Utils.print_header "Add Symbolic link"
+    Utils.run([
+      %Q(ln -s "#{bindir}/#{BIN_NAME}" "#{BINARIES_FOLDER}/#{BIN_NAME}")
+    ], task, 'symbolic_link')
 
     Utils.print_info "Finished installing. Binary is available in: #{bindir}"
   end
