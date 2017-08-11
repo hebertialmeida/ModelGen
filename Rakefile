@@ -20,7 +20,7 @@ BIN_NAME = 'modelgen'
 
 def defaults(args)
   bindir = args.bindir.nil? || args.bindir.empty? ? (Pathname.new(BUILD_DIR) + 'modelgen/bin') : Pathname.new(args.bindir)
-  fmkdir = args.fmkdir.nil? || args.fmkdir.empty? ? bindir + '../Frameworks' : Pathname.new(args.fmkdir)
+  fmkdir = args.fmkdir.nil? || args.fmkdir.empty? ? bindir + '../lib' : Pathname.new(args.fmkdir)
   [bindir, fmkdir].map(&:expand_path)
 end
 
@@ -42,7 +42,7 @@ namespace :cli do
   end
 
   desc "Install the binary in $bindir, frameworks in $fmkdir\n" \
-       "(defaults $bindir=./build/#{BIN_NAME}/bin/, $fmkdir=$bindir/../Frameworks"
+       "(defaults $bindir=./build/#{BIN_NAME}/bin/, $fmkdir=$bindir/../lib"
   task :install, [:bindir, :fmkdir] => :build do |task, args|
     (bindir, fmkdir) = defaults(args)
     generated_bundle_path = "#{BUILD_DIR}/Build/Products/#{CONFIGURATION}/#{BIN_NAME}.app/Contents"
@@ -60,6 +60,12 @@ namespace :cli do
       %Q(cp -fR "#{generated_bundle_path}/Frameworks/" "#{fmkdir}"),
     ], task, 'copy_frameworks')
 
+    Utils.print_header "Fixing binary's @rpath"
+    Utils.run([
+      %Q(install_name_tool -delete_rpath "@executable_path/../Frameworks" "#{bindir}/#{BIN_NAME}"),
+      %Q(install_name_tool -add_rpath "@executable_path/#{fmkdir.relative_path_from(bindir)}" "#{bindir}/#{BIN_NAME}"),
+    ], task, 'fix_rpath', xcrun: true)
+  
     # Utils.print_header "Add Symbolic link"
     # Utils.run([
     #   %Q(ln -s "#{bindir}/#{BIN_NAME}" "#{BINARIES_FOLDER}/#{BIN_NAME}")

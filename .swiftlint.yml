@@ -1,2 +1,6 @@
 disabled_rules:
   - line_length
+excluded:
+  - Pods
+  - Example
+  - build
