@@ -309,21 +309,17 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-modelgen/Pods-modelgen-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Commander/Commander.framework",
-				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
 				"${BUILT_PRODUCTS_DIR}/PathKit/PathKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Stencil/Stencil.framework",
 				"${BUILT_PRODUCTS_DIR}/StencilSwiftKit/StencilSwiftKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftGenKit/SwiftGenKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Yams/Yams.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Commander.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PathKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Stencil.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StencilSwiftKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftGenKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Yams.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

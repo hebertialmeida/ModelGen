@@ -5,7 +5,7 @@
       location = "container:"
       name = "Pod Metadata">
       <FileRef
-         location = "group:/Users/hebertialmeida/Projetos/Open Source/ModelGen/ModelGen.podspec">
+         location = "group:ModelGen.podspec">
       </FileRef>
       <FileRef
          location = "group:Rakefile">
@@ -18,12 +18,9 @@
       </FileRef>
    </Group>
    <FileRef
-      location = "group:/Users/hebertialmeida/Projetos/Open Source/ModelGen/ModelGen.xcodeproj">
+      location = "group:ModelGen.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:ModelGen.xcodeproj">
    </FileRef>
 </Workspace>

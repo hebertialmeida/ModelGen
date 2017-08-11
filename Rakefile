@@ -71,11 +71,9 @@ namespace :cli do
     Utils.print_header "Remove previous versions"
     Utils.run([
       %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Commander.framework"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Kanna.framework"),
       %Q(rm -rf "#{FRAMEWORKS_FOLDER}/PathKit.framework"),
       %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Stencil.framework"),
       %Q(rm -rf "#{FRAMEWORKS_FOLDER}/StencilSwiftKit.framework"),
-      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/SwiftGenKit.framework"),
       %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Yams.framework"),
       %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftAppKit.dylib"),
       %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCore.dylib"),
