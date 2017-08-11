@@ -24,7 +24,7 @@ For now you can build from source:
 ```sh
 $ git clone https://github.com/hebertialmeida/ModelGen.git
 $ cd ModelGen
-$ pod install && rake cli:install
+$ rake cli:install
 ```
 
 ## Defining a schema
