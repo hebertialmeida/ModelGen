@@ -67,7 +67,7 @@ enum OutputDestination: ArgumentConvertible {
     case .file(let path):
       do {
         if try onlyIfChanged && path.exists && path.read(.utf8) == content {
-          return print("✅  Unchanged: \(path)")
+          return print("☑️  Unchanged: \(path)")
         }
         try path.write(content)
         print("✅  Generated: \(path)")

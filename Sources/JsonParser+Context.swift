@@ -65,7 +65,7 @@ extension JsonParser {
 
       let property = properties[index]
       elements[index]["type"] = try Schema.matchTypeFor(property, language: language)
-      elements[index]["name"] = fixVariableName(name)
+      elements[index]["name"] = standardName(name)
       elements[index]["key"] = name
       elements[index]["required"] = required.contains(name)
       elements[index]["array"] = property.type == "array"
@@ -85,6 +85,14 @@ extension JsonParser {
       }
       return name != key
     })
+  }
+
+  private func standardName(_ name: String) -> String {
+    let splitedName = name.components(separatedBy: ".")
+    guard splitedName.count > 0, let last = splitedName.last else {
+      return fixVariableName(name)
+    }
+    return fixVariableName(last)
   }
 
   // MARK: Recursively check for nested objects
