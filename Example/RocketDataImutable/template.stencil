@@ -57,7 +57,7 @@ public struct {{ spec.title }}: BaseModel, Equatable {
     public var modelIdentifier: String? {
 {% if spec.identifier %}
 {% for property in spec.properties %}
-{% if property.name == spec.identifier %}
+{% if property.key == spec.identifier %}
         return "{{ spec.title }}:\({{ property.name }})"
 {% endif %}
 {% endfor %}
