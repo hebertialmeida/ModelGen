@@ -19,7 +19,7 @@ namespace :lint do
     desc 'Lint the code'
     task :code => :install do |task|
       Utils.print_header 'Linting the code'
-      Utils.run(%Q(swiftlint lint --no-cache --config ../.swiftlint.yml --strict --path Sources), task)
+      Utils.run(%Q(swiftlint lint --no-cache --config .swiftlint.yml --strict), task)
     end
   end
 end
