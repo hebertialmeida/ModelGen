@@ -13,7 +13,7 @@ POD_NAME = 'ModelGen'
 BUILD_DIR = File.absolute_path('./build')
 BIN_NAME = 'modelgen'
 BINARIES_FOLDER = '/usr/local/bin'
-# FRAMEWORKS_FOLDER = '/usr/local/Frameworks'
+FRAMEWORKS_FOLDER = '/usr/local/Frameworks'
 
 
 ## [ Utils ] ##################################################################
@@ -80,30 +80,30 @@ namespace :cli do
     sh %Q(rm -fr #{BUILD_DIR})
   end
 
-  # desc "Uninstall\n"
-  # task :uninstall do
-  #   Utils.print_header "Remove previous versions"
-  #   Utils.run([
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Commander.framework"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/PathKit.framework"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Stencil.framework"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/StencilSwiftKit.framework"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Yams.framework"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftAppKit.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCore.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreData.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreGraphics.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreImage.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDarwin.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDispatch.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftFoundation.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftIOKit.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftObjectiveC.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftQuartzCore.dylib"),
-  #     %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftXPC.dylib"),
-  #     %Q(rm -f "#{BINARIES_FOLDER}/#{BIN_NAME}")
-  #   ], task, 'uninstall')
-  # end
+  desc "Uninstall\n"
+  task :uninstall do
+    Utils.print_header "Remove previous versions"
+    Utils.run([
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Commander.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/PathKit.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Stencil.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/StencilSwiftKit.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/Yams.framework"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftAppKit.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCore.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreData.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreGraphics.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftCoreImage.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDarwin.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftDispatch.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftFoundation.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftIOKit.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftObjectiveC.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftQuartzCore.dylib"),
+      %Q(rm -rf "#{FRAMEWORKS_FOLDER}/libswiftXPC.dylib"),
+      %Q(rm -f "#{BINARIES_FOLDER}/#{BIN_NAME}")
+    ], task, 'uninstall')
+  end
 end
 
 task :default => 'cli:build'

@@ -67,9 +67,10 @@ extension JsonParser {
       elements[index]["type"] = try Schema.matchTypeFor(property, language: language)
       elements[index]["name"] = standardName(name)
       elements[index]["key"] = name
-      elements[index]["required"] = required.contains(name)
       elements[index]["array"] = property.type == "array"
       elements[index]["nestedObject"] = hasNestedObjects(property)
+      elements[index]["required"] = required.contains(name)
+      elements[index]["keyPath"] = name.contains(".")
 
       if let ref = property.ref {
         elements[index]["refType"] = Schema.matchRefType(ref)

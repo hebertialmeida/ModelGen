@@ -45,9 +45,9 @@ public struct {{ spec.title }}: BaseModel, Equatable {
     public init(unboxer: Unboxer) throws {
 {% for property in spec.properties %}
 {% if property.format == "date" %}
-        self.{{ property.name }} = {% if property.required %}try{% endif %} unboxer.unbox(key: "{{ property.key }}", formatter: Date.serverDateFormatter())
+        self.{{ property.name }} = {% if property.required %}try{% endif %} unboxer.unbox({% if property.keyPath %}keyPath{% else %}key{% endif %}: "{{ property.key }}", formatter: Date.serverDateFormatter())
 {% else %}
-        self.{{ property.name }} = {% if property.required %}try{% endif %} unboxer.unbox(key: "{{ property.key }}")
+        self.{{ property.name }} = {% if property.required %}try{% endif %} unboxer.unbox({% if property.keyPath %}keyPath{% else %}key{% endif %}: "{{ property.key }}")
 {% endif %}
 {% endfor %}
     }
