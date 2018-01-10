@@ -51,16 +51,16 @@ extension String {
                      for: startIndex..<startIndex)
         while outEndIndex <= index && outEndIndex < endIndex {
             number += 1
-            let range = outEndIndex..<outEndIndex
+            let range: Range = outEndIndex..<outEndIndex
             getLineStart(&outStartIndex, end: &outEndIndex, contentsEnd: &outContentsEndIndex,
                          for: range)
         }
-        let utf16StartIndex = outStartIndex.samePosition(in: utf16)
-        let utf16Index = index.samePosition(in: utf16)
+        let utf16StartIndex = outStartIndex.samePosition(in: utf16)!
+        let utf16Index = index.samePosition(in: utf16)!
         return (
             number,
             utf16.distance(from: utf16StartIndex, to: utf16Index),
-            substring(with: outStartIndex..<outEndIndex)
+            String(self[outStartIndex..<outEndIndex])
         )
     }
 
@@ -75,11 +75,11 @@ extension String {
                      for: startIndex..<startIndex)
         while number < line && outEndIndex < endIndex {
             number += 1
-            let range = outEndIndex..<outEndIndex
+            let range: Range = outEndIndex..<outEndIndex
             getLineStart(&outStartIndex, end: &outEndIndex, contentsEnd: &outContentsEndIndex,
                          for: range)
         }
-        return substring(with: outStartIndex..<outEndIndex)
+        return String(self[outStartIndex..<outEndIndex])
     }
 
     /// String appending newline if is not ending with newline.
