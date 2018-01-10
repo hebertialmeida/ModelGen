@@ -13,7 +13,7 @@ extension String {
 
   /// Fetches the first character of the string.
   var first: String {
-    return String(characters.prefix(1))
+    return String(prefix(1))
   }
 
   /**
@@ -24,14 +24,14 @@ extension String {
   ///
   /// - Returns: String with the first character upper case.
   @discardableResult func uppercaseFirst() -> String {
-    return first.uppercased() + String(characters.dropFirst())
+    return first.uppercased() + String(dropFirst())
   }
 
   /// Makes the first character lowercase.
   ///
   /// - Returns: String with the first character lowercase.
   @discardableResult func lowerCaseFirst() -> String {
-    return first.lowercased() + String(characters.dropFirst())
+    return first.lowercased() + String(dropFirst())
   }
 
   /// Replaces occurrence of multiple strings with a single string.

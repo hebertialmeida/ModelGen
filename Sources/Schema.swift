@@ -41,13 +41,13 @@ public class SchemaProperty {
     self.format = dictionary["format"] as? String
     self.ref = dictionary["$ref"] as? String
 
-    if let items = dictionary["items"] as? [String : Any] {
+    if let items = dictionary["items"] as? [String: Any] {
       self.items = try SchemaProperty(dictionary: items)
     } else {
       self.items = nil
     }
 
-    if let additionalProperties = dictionary["additionalProperties"] as? [String : Any] {
+    if let additionalProperties = dictionary["additionalProperties"] as? [String: Any] {
       self.additionalProperties = try SchemaProperty(dictionary: additionalProperties)
     } else {
       self.additionalProperties = nil

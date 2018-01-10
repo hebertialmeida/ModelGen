@@ -9,6 +9,7 @@ WORKSPACE = 'ModelGen'
 SCHEME_NAME='modelgen'
 CONFIGURATION = 'Release'
 POD_NAME = 'ModelGen'
+MIN_XCODE_VERSION = 9.0
 
 BUILD_DIR = File.absolute_path('./build')
 BIN_NAME = 'modelgen'
