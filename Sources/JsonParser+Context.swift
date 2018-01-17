@@ -8,6 +8,8 @@
 
 import Foundation
 
+private let concreteRefTypeSuffix = "Concrete"
+
 extension JsonParser {
 	public func stencilContextFor(_ language: Language) throws -> JSON {
 		try dicToArray()
@@ -15,8 +17,8 @@ extension JsonParser {
 		try prepareContextFor(language)
 
 		return [
-		"spec": json,
-		"nestedObjects": hasNestedObjects()
+			"spec": json,
+			"nestedObjects": hasNestedObjects()
 		]
 	}
 
@@ -54,9 +56,14 @@ extension JsonParser {
 			}
 
 			let property = properties[index]
-			elements[index]["type"] = try Schema.matchTypeFor(property, language: language)
+			let type = try Schema.matchTypeFor(property, language: language)
+			elements[index]["type"] = type
 			elements[index]["name"] = property.name
 			elements[index]["key"] = name
+
+			let concreteRefType = property.ref == nil ? type : "\(type)\(concreteRefTypeSuffix)"
+
+			elements[index]["concreteRefType"] = concreteRefType
 			elements[index]["jsonKey"] = property.jsonKey ?? name
 			elements[index]["array"] = property.type == "array"
 			elements[index]["nestedObject"] = hasNestedObjects(property)
@@ -79,6 +86,7 @@ extension JsonParser {
 			throw JsonParserError.missingProperties
 		}
 		let elements = try prepareProperties(items, language: language)
+		json["concreteRefTypeSuffix"] = concreteRefTypeSuffix
 		json["properties"] = elements
 		json["customKeyProperties"] = customKeyProperties.map { $0.toJson() }
 		json["nonCustomKeyProperties"] = nonCustomKeyProperties.map { $0.toJson() }

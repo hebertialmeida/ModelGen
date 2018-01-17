@@ -1,9 +1,9 @@
 {
   "title": "Avatar",
   "type": "object",
+  "concreteType": "class",
   "properties": {
     "original": {"type": "string", "format": "uri"},
     "small": {"type": "string", "format": "uri"}
-  },
-  "required": []
+  }
 }

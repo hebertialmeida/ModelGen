@@ -80,7 +80,6 @@ public final class SchemaProperty {
     dictionary["description"] = description
     dictionary["format"] = format
     dictionary["$ref"] = ref
-    dictionary["apa"] = "banan"
     dictionary["items"] = items?.toJson()
     dictionary["additionalProperties"] = additionalProperties?.toJson()
 
