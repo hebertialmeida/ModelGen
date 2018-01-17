@@ -69,7 +69,7 @@ namespace :cli do
   
     Utils.print_header "Add Symbolic link"
     Utils.run([
-      %Q(ln -s "#{bindir}/#{BIN_NAME}" "#{BINARIES_FOLDER}/#{BIN_NAME}")
+      %Q(ln -sf "#{bindir}/#{BIN_NAME}" "#{BINARIES_FOLDER}/#{BIN_NAME}")
     ], task, 'symbolic_link')
 
     Utils.print_info "Finished installing. Binary is available in: #{bindir}"

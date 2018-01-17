@@ -27,16 +27,32 @@ enum StringFormatType: String {
 
 // MARK: Schema
 
-public class SchemaProperty {
+public final class SchemaProperty {
+
+
+  let isOptional: Bool
+  let isReadOnly: Bool
+
+  let name: String?
   let type: String?
+  let jsonKey: String?
   let description: String?
   let format: String?
   let ref: String?
+
   let items: SchemaProperty?
   let additionalProperties: SchemaProperty?
 
+  var hasCustomJsonKey: Bool {
+    return jsonKey != nil
+  }
+
   init(dictionary: [String: Any]) throws {
+    self.name = standardName(dictionary["name"] as? String)
     self.type = dictionary["type"] as? String
+    self.jsonKey = dictionary["jsonKey"] as? String
+    self.isOptional = (dictionary["isOptional"] as? Bool) ?? false
+    self.isReadOnly = (dictionary["isReadOnly"] as? Bool) ?? false
     self.description = dictionary["description"] as? String
     self.format = dictionary["format"] as? String
     self.ref = dictionary["$ref"] as? String
@@ -53,6 +69,32 @@ public class SchemaProperty {
       self.additionalProperties = nil
     }
   }
+
+  func toJson() -> JSON {
+    var dictionary: JSON = [:]
+    dictionary["name"] = name
+    dictionary["type"] = type
+    dictionary["jsonKey"] = jsonKey
+    dictionary["isOptional"] = isOptional
+    dictionary["isReadOnly"] = isReadOnly
+    dictionary["description"] = description
+    dictionary["format"] = format
+    dictionary["$ref"] = ref
+    dictionary["apa"] = "banan"
+    dictionary["items"] = items?.toJson()
+    dictionary["additionalProperties"] = additionalProperties?.toJson()
+
+    return dictionary
+  }
+}
+
+private func standardName(_ name: String?) -> String? {
+  guard let name = name else { return nil }
+  let splitedName = name.components(separatedBy: ".")
+  guard splitedName.count > 0, let last = splitedName.last else {
+    return fixVariableName(name)
+  }
+  return fixVariableName(last)
 }
 
 struct Schema {
@@ -133,4 +175,22 @@ struct Schema {
       return ObjcType.match(baseType: baseType).rawValue
     }
   }
+}
+
+
+extension Dictionary {
+    init(_ pairs: [Element]) {
+        self.init()
+        for (k, v) in pairs {
+            self[k] = v
+        }
+    }
+    
+    func mapValues<T>(transform: (Value) -> T?) -> [Key: T] {
+        var dict = [Key: T]()
+        for (key, value) in zip(keys, values.flatMap(transform)) {
+            dict[key] = value
+        }
+        return dict
+    }
 }

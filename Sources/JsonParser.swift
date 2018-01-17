@@ -15,6 +15,14 @@ public typealias JSON = [String: Any]
 public final class JsonParser {
   public var json: JSON = [:]
   public var properties = [SchemaProperty]()
+  public var customKeyProperties: [SchemaProperty] {
+    return properties.filter { $0.hasCustomJsonKey }
+
+  }
+
+  public var nonCustomKeyProperties: [SchemaProperty] {
+    return properties.filter { !$0.hasCustomJsonKey }
+  }
 
   public init() {}
 
