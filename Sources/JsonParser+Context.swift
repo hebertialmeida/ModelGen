@@ -61,11 +61,20 @@ extension JsonParser {
 			elements[index]["name"] = property.name
 			elements[index]["key"] = name
 
-			let concreteRefType = property.ref == nil ? type : "\(type)\(concreteRefTypeSuffix)"
+      let isArray: Bool = property.type == "array"
+      let concreteRefType: String
+      if isArray {
+        let elementType = String(String(type.dropFirst()).dropLast())
+        elements[index]["elementType"] = elementType
+        elements[index]["concreteElementType"] = "\(elementType)\(concreteRefTypeSuffix)"
+        concreteRefType = "[\(elementType)\(concreteRefTypeSuffix)]"
+      } else {
+        concreteRefType = property.ref == nil ? type : "\(type)\(concreteRefTypeSuffix)"
+      }
 
-			elements[index]["concreteRefType"] = concreteRefType
+      elements[index]["concreteRefType"] = concreteRefType
 			elements[index]["jsonKey"] = property.jsonKey ?? name
-			elements[index]["array"] = property.type == "array"
+			elements[index]["array"] = isArray
 			elements[index]["nestedObject"] = hasNestedObjects(property)
 			elements[index]["isOptional"] = property.isOptional
 			elements[index]["isReadOnly"] = property.isReadOnly
