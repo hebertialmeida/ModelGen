@@ -23,6 +23,22 @@ public final class JsonParser {
   public var nonCustomKeyProperties: [SchemaProperty] {
     return properties.filter { !$0.hasCustomJsonKey }
   }
+  
+  public var nonOptionalProperties: [SchemaProperty] {
+    return properties.filter { !$0.isOptional }
+  }
+  
+  public var optionalProperties: [SchemaProperty] {
+    return properties.filter { $0.isOptional }
+  }
+  
+  public var immutableProperties: [SchemaProperty] {
+    return properties.filter { !$0.isMutable }
+  }
+  
+  public var mutableProperties: [SchemaProperty] {
+    return properties.filter { $0.isMutable }
+  }
 
   public init() {}
 

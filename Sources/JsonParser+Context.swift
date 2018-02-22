@@ -77,7 +77,7 @@ extension JsonParser {
 			elements[index]["array"] = isArray
 			elements[index]["nestedObject"] = hasNestedObjects(property)
 			elements[index]["isOptional"] = property.isOptional
-			elements[index]["isReadOnly"] = property.isReadOnly
+			elements[index]["isMutable"] = property.isMutable
 			elements[index]["keyPath"] = name.contains(".")
 
 			if let ref = property.ref {
@@ -98,7 +98,11 @@ extension JsonParser {
 		json["concreteRefTypeSuffix"] = concreteRefTypeSuffix
 		json["properties"] = elements
 		json["customKeyProperties"] = customKeyProperties.map { $0.toJson() }
-		json["nonCustomKeyProperties"] = nonCustomKeyProperties.map { $0.toJson() }
+    json["nonCustomKeyProperties"] = nonCustomKeyProperties.map { $0.toJson() }
+    json["nonOptionalProperties"] = nonOptionalProperties.map { $0.toJson() }
+    json["optionalProperties"] = optionalProperties.map { $0.toJson() }
+    json["immutableProperties"] = immutableProperties.map { $0.toJson() }
+    json["mutableProperties"] = mutableProperties.map { $0.toJson() }
 		json["modifiedProperties"] = elements.filter({
 			guard let name = $0["name"] as? String, let key = $0["key"] as? String else {
 				return false

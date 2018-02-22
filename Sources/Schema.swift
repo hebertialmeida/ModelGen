@@ -31,7 +31,7 @@ public final class SchemaProperty {
 
 
   let isOptional: Bool
-  let isReadOnly: Bool
+  let isMutable: Bool
 
   let name: String?
   let type: String?
@@ -52,7 +52,7 @@ public final class SchemaProperty {
     self.type = dictionary["type"] as? String
     self.jsonKey = dictionary["jsonKey"] as? String
     self.isOptional = (dictionary["isOptional"] as? Bool) ?? false
-    self.isReadOnly = (dictionary["isReadOnly"] as? Bool) ?? false
+    self.isMutable = (dictionary["isMutable"] as? Bool) ?? false
     self.description = dictionary["description"] as? String
     self.format = dictionary["format"] as? String
     self.ref = dictionary["$ref"] as? String
@@ -76,7 +76,7 @@ public final class SchemaProperty {
     dictionary["type"] = type
     dictionary["jsonKey"] = jsonKey
     dictionary["isOptional"] = isOptional
-    dictionary["isReadOnly"] = isReadOnly
+    dictionary["isMutable"] = isMutable
     dictionary["description"] = description
     dictionary["format"] = format
     dictionary["$ref"] = ref
