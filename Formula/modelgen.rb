@@ -3,7 +3,7 @@ class Modelgen < Formula
   homepage "https://github.com/hebertialmeida/ModelGen"
   url "https://github.com/hebertialmeida/ModelGen.git",
       :tag => "0.3.0",
-      :revision => "dda61ca457c805514708537a79fe65a5c7856533"
+      :revision => "22ca2343cd65a4df4a039eef004ba5a75a0609fc"
   head "https://github.com/hebertialmeida/ModelGen.git"
 
   depends_on :xcode => ["9.3", :build]
