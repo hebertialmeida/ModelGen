@@ -18,7 +18,7 @@ let outputOption = Option<OutputDestination>("output", default: .console, flag: 
 
 // MARK: - Version
 
-let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.2.0"
+let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.3.0"
 
 // MARK: - Main
 
