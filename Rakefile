@@ -14,14 +14,11 @@ MIN_XCODE_VERSION = 9.3
 
 BUILD_DIR = File.absolute_path('./build')
 BIN_NAME = 'modelgen'
-BINARIES_FOLDER = '/usr/local/bin'
-FRAMEWORKS_FOLDER = '/usr/local/Frameworks'
-
 
 ## [ Utils ] ##################################################################
 
 def defaults(args)
-  bindir = args.bindir.nil? || args.bindir.empty? ? (Pathname.new(BUILD_DIR) + 'modelgen/bin') : Pathname.new(args.bindir)
+  bindir = args.bindir.nil? || args.bindir.empty? ? (Pathname.new(BUILD_DIR) + "#{BIN_NAME}/bin") : Pathname.new(args.bindir)
   fmkdir = args.fmkdir.nil? || args.fmkdir.empty? ? bindir + '../lib' : Pathname.new(args.fmkdir)
   [bindir, fmkdir].map(&:expand_path)
 end
@@ -62,11 +59,11 @@ namespace :cli do
       %(cp -fR "#{generated_bundle_path}/Frameworks/" "#{fmkdir}")
     ], task, 'copy_frameworks')
 
-    Utils.print_header "Fixing binary's @rpath"
-    Utils.run([
-      %(install_name_tool -delete_rpath "@executable_path/../Frameworks" "#{bindir}/#{BIN_NAME}"),
-      %(install_name_tool -add_rpath "@executable_path/#{fmkdir.relative_path_from(bindir)}" "#{bindir}/#{BIN_NAME}")
-    ], task, 'fix_rpath', xcrun: true)
+    # Utils.print_header "Fixing binary's @rpath"
+    # Utils.run([
+    #   %(install_name_tool -delete_rpath "@executable_path/../Frameworks" "#{bindir}/#{BIN_NAME}"),
+    #   %(install_name_tool -add_rpath "@executable_path/#{fmkdir.relative_path_from(bindir)}" "#{bindir}/#{BIN_NAME}")
+    # ], task, 'fix_rpath', xcrun: true)
 
     Utils.print_info "Finished installing. Binary is available in: #{bindir}"
   end
