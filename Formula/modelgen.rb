@@ -11,7 +11,10 @@ class Modelgen < Formula
 
   def install
     ENV["NO_CODE_LINT"]="1" # Disable swiftlint Build Phase to avoid build errors if versions mismatch
-    rake "cli:install[#{bin},#{lib}]"
+
+    system "gem", "install", "bundler"
+    system "bundle", "install", "--without", "development"
+    system "bundle", "exec", "rake", "cli:install[#{bin},#{lib}]"
   end
 
   test do
