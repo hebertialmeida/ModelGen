@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_modelgenVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_modelgenVersionString[];
+FOUNDATION_EXPORT double Pods_ModelGenVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_ModelGenVersionString[];
 

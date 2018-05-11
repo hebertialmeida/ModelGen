@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "234F7E6D1DEBD5C5001B3C10"
-               BuildableName = "modelgen.app"
-               BlueprintName = "modelgen"
+               BuildableName = "ModelGen.app"
+               BlueprintName = "ModelGen"
                ReferencedContainer = "container:ModelGen.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -67,8 +67,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "234F7E6D1DEBD5C5001B3C10"
-            BuildableName = "modelgen.app"
-            BlueprintName = "modelgen"
+            BuildableName = "ModelGen.app"
+            BlueprintName = "ModelGen"
             ReferencedContainer = "container:ModelGen.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -90,8 +90,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "234F7E6D1DEBD5C5001B3C10"
-            BuildableName = "modelgen.app"
-            BlueprintName = "modelgen"
+            BuildableName = "ModelGen.app"
+            BlueprintName = "ModelGen"
             ReferencedContainer = "container:ModelGen.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -134,8 +134,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "234F7E6D1DEBD5C5001B3C10"
-            BuildableName = "modelgen.app"
-            BlueprintName = "modelgen"
+            BuildableName = "ModelGen.app"
+            BlueprintName = "ModelGen"
             ReferencedContainer = "container:ModelGen.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

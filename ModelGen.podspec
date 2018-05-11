@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ModelGen"
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = "A Swift tool to generate Models for many languages, based on a JSON-Schema and a Stencil template"
 
   s.description  = <<-DESC

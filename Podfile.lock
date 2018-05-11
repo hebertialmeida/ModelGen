@@ -11,24 +11,28 @@ DEPENDENCIES:
   - Commander (from `https://github.com/kylef/Commander.git`)
   - PathKit
   - Stencil
-  - StencilSwiftKit
+  - StencilSwiftKit (from `https://github.com/SwiftGen/StencilSwiftKit.git`)
   - Yams
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - PathKit
     - Stencil
-    - StencilSwiftKit
     - Yams
 
 EXTERNAL SOURCES:
   Commander:
     :git: https://github.com/kylef/Commander.git
+  StencilSwiftKit:
+    :git: https://github.com/SwiftGen/StencilSwiftKit.git
 
 CHECKOUT OPTIONS:
   Commander:
     :commit: 314f8d7455e25e60e9e9b850040eebd0a87f2527
     :git: https://github.com/kylef/Commander.git
+  StencilSwiftKit:
+    :commit: 561bce58ff7cc586fe2fe4311548d9d55449179f
+    :git: https://github.com/SwiftGen/StencilSwiftKit.git
 
 SPEC CHECKSUMS:
   Commander: 6a0e04e11a6cc61b564ba247505e93aaa00032d3
@@ -37,6 +41,6 @@ SPEC CHECKSUMS:
   StencilSwiftKit: 0be4d4897cf83e9c463caa14f4732454afb33ae6
   Yams: 9dfe90be5b942df6fa42ead8e6f0313e05600755
 
-PODFILE CHECKSUM: f45b0cea377e24a9a427bcd54ca1bf087d3552ae
+PODFILE CHECKSUM: 74c5c5f4b84d5e00db5117332eceb96b9c3a3ecc
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.2

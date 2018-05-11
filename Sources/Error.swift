@@ -6,6 +6,7 @@
 //  Copyright © 2017 ModelGen. All rights reserved.
 //
 
+import Foundation
 import PathKit
 
 enum JsonParserError: Error, LocalizedError {

@@ -6,7 +6,7 @@ require 'shellwords'
 ## [ Constants ] ##############################################################
 
 WORKSPACE = 'ModelGen'.freeze
-SCHEME_NAME='modelgen'.freeze
+SCHEME_NAME='ModelGen'.freeze
 CONFIGURATION = 'Debug'.freeze
 RELEASE_CONFIGURATION = 'Release'.freeze
 POD_NAME = 'ModelGen'.freeze
