@@ -20,11 +20,13 @@ Take a look at [Example](/Example) folder.
 
 ## Installation
 
-For now you can build from source:
+Make sure Xcode 9.3+ is installed first.
+
+### Homebrew
+
 ```sh
-$ git clone https://github.com/hebertialmeida/ModelGen.git
-$ cd ModelGen
-$ rake cli:install
+$ brew tap hebertialmeida/ModelGen https://github.com/hebertialmeida/ModelGen.git
+$ brew install ModelGen
 ```
 
 ## Defining a schema
