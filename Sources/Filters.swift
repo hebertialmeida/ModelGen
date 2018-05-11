@@ -24,12 +24,12 @@ func titlecase(_ string: String) -> String {
 /// - Parameter variableName: Name of the variable in the JSON.
 /// - Returns: A generated string representation of the variable name.
 func fixVariableName(_ variableName: String) -> String {
-  var _variableName = replaceKeywords(variableName)
-  _variableName.replaceOccurrencesOfStringsWithString(["-", "_"], " ")
-  _variableName.trim()
+  var name = replaceKeywords(variableName)
+  name.replaceOccurrencesOfStringsWithString(["-", "_"], " ")
+  name.trim()
 
   var finalVariableName = ""
-  for (index, var element) in _variableName.components(separatedBy: " ").enumerated() {
+  for (index, var element) in name.components(separatedBy: " ").enumerated() {
     element = index == 0 ? element.lowerCaseFirst() : element.uppercaseFirst()
     finalVariableName.append(element)
   }

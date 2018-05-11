@@ -1,26 +1,42 @@
 PODS:
-  - Commander (0.6.0)
+  - Commander (0.8.0)
   - PathKit (0.8.0)
-  - Stencil (0.9.0):
+  - Stencil (0.11.0):
     - PathKit (~> 0.8.0)
-  - StencilSwiftKit (2.0.1):
-    - Stencil (~> 0.9.0)
-  - Yams (0.5.0)
+  - StencilSwiftKit (2.5.0):
+    - Stencil (~> 0.11)
+  - Yams (0.7.0)
 
 DEPENDENCIES:
-  - Commander (~> 0.6.0)
-  - PathKit (~> 0.8.0)
-  - Stencil (~> 0.9.0)
-  - StencilSwiftKit (~> 2.0.0)
-  - Yams (~> 0.3)
+  - Commander (from `https://github.com/kylef/Commander.git`)
+  - PathKit
+  - Stencil
+  - StencilSwiftKit
+  - Yams
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - PathKit
+    - Stencil
+    - StencilSwiftKit
+    - Yams
+
+EXTERNAL SOURCES:
+  Commander:
+    :git: https://github.com/kylef/Commander.git
+
+CHECKOUT OPTIONS:
+  Commander:
+    :commit: 314f8d7455e25e60e9e9b850040eebd0a87f2527
+    :git: https://github.com/kylef/Commander.git
 
 SPEC CHECKSUMS:
-  Commander: fba7c96c9e787ecc8ebe0737be875e1e18ef47ff
+  Commander: 6a0e04e11a6cc61b564ba247505e93aaa00032d3
   PathKit: dcab05d701474011aae0e40cf892298a831f63d6
-  Stencil: 510f0b0518a366b67b6a9c5085a0399741b6d2f9
-  StencilSwiftKit: 1f77f00fb251de992e962f1311e8f418713dab9c
-  Yams: 58b13424ca380835c4c797bc775ce6cbb3bc0167
+  Stencil: a1873ecd92cbc053c6b391de7583b9f5bfbb3de6
+  StencilSwiftKit: 0be4d4897cf83e9c463caa14f4732454afb33ae6
+  Yams: 9dfe90be5b942df6fa42ead8e6f0313e05600755
 
-PODFILE CHECKSUM: 6b16ac77f9fbf7d9149d35b12e5050d7551aa151
+PODFILE CHECKSUM: f45b0cea377e24a9a427bcd54ca1bf087d3552ae
 
-COCOAPODS: 1.4.0.rc.1
+COCOAPODS: 1.5.0

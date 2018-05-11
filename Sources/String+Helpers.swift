@@ -54,8 +54,8 @@ extension String {
   ///
   /// - Parameter prefix: String to append.
   mutating func appendPrefix(_ prefix: String?) {
-    if let _prefix = prefix {
-      self = _prefix + self
+    if let prefix = prefix {
+      self = prefix + self
     }
   }
 }

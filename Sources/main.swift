@@ -11,10 +11,10 @@ import PathKit
 
 // MARK: - Options
 
-let specOption = Option<Path>("spec", Path(), flag: "s", description: "The spec folder or file path e.g: ./specs or user.json", validator: pathExists)
-let templateOption = Option<String>("template", "", flag: "t", description: "The path of the template to use for code generation.")
-let languageOption = Option<String>("language", Language.swift.rawValue, flag: "l", description: "The output language e.g: swift")
-let outputOption = Option<OutputDestination>("output", .console, flag: "o", description: "The path to the file to generate (Omit to generate to stdout)")
+let specOption = Option<Path>("spec", default: Path(), flag: "s", description: "The spec folder or file path e.g: ./specs or user.json", validator: pathExists)
+let templateOption = Option<String>("template", default: "", flag: "t", description: "The path of the template to use for code generation.")
+let languageOption = Option<String>("language", default: Language.swift.rawValue, flag: "l", description: "The output language e.g: swift")
+let outputOption = Option<OutputDestination>("output", default: .console, flag: "o", description: "The path to the file to generate (Omit to generate to stdout)")
 
 // MARK: - Version
 
