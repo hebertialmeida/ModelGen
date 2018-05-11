@@ -11,7 +11,9 @@ class Modelgen < Formula
   def install
     ENV["NO_CODE_LINT"]="1" # Disable swiftlint Build Phase to avoid build errors if versions mismatch
 
+    ENV["GEM_HOME"] = buildpath/"gem_home"
     system "gem", "install", "bundler"
+    ENV.prepend_path "PATH", buildpath/"gem_home/bin"
     system "bundle", "install", "--without", "development"
     system "bundle", "exec", "rake", "cli:install[#{bin},#{lib}]"
   end
