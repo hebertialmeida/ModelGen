@@ -8,9 +8,47 @@ import Foundation
 import Stencil
 
 enum Filters {
+  typealias BooleanWithArguments = (Any?, [Any?]) throws -> Bool
+
   enum Error: Swift.Error {
     case invalidInputType
     case invalidOption(option: String)
+  }
+
+  /// Parses filter input value for a string value, where accepted objects must conform to
+  /// `CustomStringConvertible`
+  ///
+  /// - Parameters:
+  ///   - value: an input value, may be nil
+  /// - Throws: Filters.Error.invalidInputType
+  static func parseString(from value: Any?) throws -> String {
+    if let losslessString = value as? LosslessStringConvertible {
+        return String(describing: losslessString)
+    }
+    if let string = value as? String {
+        return string
+    }
+    throw Error.invalidInputType
+  }
+
+  /// Parses filter arguments for a string value, where accepted objects must conform to 
+  /// `CustomStringConvertible`
+  ///
+  /// - Parameters:
+  ///   - arguments: an array of argument values, may be empty
+  ///   - index: the index in the arguments array
+  /// - Throws: Filters.Error.invalidInputType
+  static func parseStringArgument(from arguments: [Any?], at index: Int = 0) throws -> String {
+    guard index < arguments.count else {
+        throw Error.invalidInputType
+    }
+    if let losslessString = arguments[index] as? LosslessStringConvertible {
+        return String(describing: losslessString)
+    }
+    if let string = arguments[index] as? String {
+        return string
+    }
+    throw Error.invalidInputType
   }
 
   /// Parses filter arguments for a boolean value, where true can by any one of: "true", "yes", "1", and
@@ -23,6 +61,7 @@ enum Filters {
   ///   - required: If true, the argument is required and function throws if missing.
   ///               If false, returns nil on missing args.
   /// - Throws: Filters.Error.invalidInputType
+  // swiftlint:disable discouraged_optional_boolean
   static func parseBool(from arguments: [Any?], at index: Int = 0, required: Bool = true) throws -> Bool? {
     guard index < arguments.count, let boolArg = arguments[index] as? String else {
       if required {
@@ -41,6 +80,7 @@ enum Filters {
       throw Error.invalidInputType
     }
   }
+  // swiftlint:enable discouraged_optional_boolean
 
   /// Parses filter arguments for an enum value (with a String rawvalue).
   ///
