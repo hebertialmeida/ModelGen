@@ -16,7 +16,7 @@ build:
 
 install: build
 	@install -d "$(bindir)"
-	@install "$(BUILDDIR)/release/modelgen" "$(bindir)"
+	@install "$(BUILDDIR)/release/modelgen" "$(bindir)/modelgen"
 
 uninstall:
 	@rm -rf "$(bindir)/modelgen"
