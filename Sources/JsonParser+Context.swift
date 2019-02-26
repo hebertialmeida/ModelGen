@@ -28,7 +28,8 @@ extension JsonParser {
         }
 
         var properties = [JSON]()
-        for (key, value) in items {
+
+        for (key, value) in items.sorted(by: { $0.key < $1.key }) {
             guard let value = value as? JSON else {
                 throw JsonParserError.missingProperties
             }
