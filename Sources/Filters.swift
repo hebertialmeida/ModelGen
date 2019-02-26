@@ -13,8 +13,8 @@ import Foundation
 /// - Parameter string: Input string
 /// - Returns: Transformed string
 func titlecase(_ string: String) -> String {
-  guard let first = string.unicodeScalars.first else { return string }
-  return String(first).uppercased() + String(string.unicodeScalars.dropFirst())
+    guard let first = string.unicodeScalars.first else { return string }
+    return String(first).uppercased() + String(string.unicodeScalars.dropFirst())
 }
 
 /// Generates/fixes a variable name in sentence case with the first letter as lowercase.
@@ -24,16 +24,16 @@ func titlecase(_ string: String) -> String {
 /// - Parameter variableName: Name of the variable in the JSON.
 /// - Returns: A generated string representation of the variable name.
 func fixVariableName(_ variableName: String) -> String {
-  var name = replaceKeywords(variableName)
-  name.replaceOccurrencesOfStringsWithString(["-", "_"], " ")
-  name.trim()
+    var name = replaceKeywords(variableName)
+    name.replaceOccurrencesOfStringsWithString(["-", "_"], " ")
+    name.trim()
 
-  var finalVariableName = ""
-  for (index, var element) in name.components(separatedBy: " ").enumerated() {
-    element = index == 0 ? element.lowerCaseFirst() : element.uppercaseFirst()
-    finalVariableName.append(element)
-  }
-  return finalVariableName
+    var finalVariableName = ""
+    for (index, var element) in name.components(separatedBy: " ").enumerated() {
+        element = index == 0 ? element.lowerCaseFirst() : element.uppercaseFirst()
+        finalVariableName.append(element)
+    }
+    return finalVariableName
 }
 
 /// Cross checks the current name against a possible set of keywords, this list is no where
@@ -43,14 +43,14 @@ func fixVariableName(_ variableName: String) -> String {
 /// - Parameter currentName: The current name which has to be checked.
 /// - Returns: New name for the variable.
 func replaceKeywords(_ currentName: String) -> String {
-  let keywordsWithReplacements = [
-    "class": "classProperty",
-    "struct": "structProperty",
-    "enum": "enumProperty",
-    "internal": "internalProperty",
-    "default": "defaultValue"]
-  if let value = keywordsWithReplacements[currentName] {
-    return value
-  }
-  return currentName
+    let keywordsWithReplacements = [
+        "class": "classProperty",
+        "struct": "structProperty",
+        "enum": "enumProperty",
+        "internal": "internalProperty",
+        "default": "defaultValue"]
+    if let value = keywordsWithReplacements[currentName] {
+        return value
+    }
+    return currentName
 }

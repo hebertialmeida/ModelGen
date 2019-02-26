@@ -9,15 +9,15 @@
 import Foundation
 
 struct Configuration {
-  let spec: String?
-  let template: String?
-  let language: String?
-  let output: String?
+    let spec: String?
+    let template: String?
+    let language: String?
+    let output: String?
 
-  init?(dictionary: [String: Any]) {
-    self.spec = dictionary["spec"] as? String
-    self.template = dictionary["template"] as? String
-    self.language = dictionary["language"] as? String
-    self.output = dictionary["output"] as? String
-  }
+    init?(dictionary: [String: Any]) {
+        self.spec = dictionary["spec"] as? String
+        self.template = dictionary["template"] as? String
+        self.language = dictionary["language"] as? String
+        self.output = dictionary["output"] as? String
+    }
 }
