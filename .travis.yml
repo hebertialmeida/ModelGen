@@ -1,12 +1,4 @@
-osx_image: xcode9.3
+osx_image: xcode10.1
 language: objective-c
-cache: cocoapods
-podfile: Podfile
 
-before_install:
-  - gem update --system
-  - bundle install
-  - bundle exec pod install --repo-update
-
-script:
-  - rake cli:build
+script: make build
