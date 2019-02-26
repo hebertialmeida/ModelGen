@@ -15,6 +15,7 @@ build:
 		--build-path "$(BUILDDIR)"
 
 install: build
+	@install -d "$(bindir)"
 	@install "$(BUILDDIR)/release/modelgen" "$(bindir)"
 
 uninstall:
