@@ -45,13 +45,13 @@ extension Path: ArgumentConvertible {
 
 enum OutputDestination: ArgumentConvertible {
   case console
-  case file(Path)
+  case file(path: Path)
 
   init(parser: ArgumentParser) throws {
     guard let path = parser.shift() else {
       throw ArgumentError.missingValue(argument: nil)
     }
-    self = .file(Path(path))
+    self = .file(path: Path(path))
   }
   var description: String {
     switch self {

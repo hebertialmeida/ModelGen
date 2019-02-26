@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 
 import PackageDescription
 
@@ -9,10 +9,10 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/kylef/Commander.git", from: "0.8.0"),
-        .package(url: "https://github.com/kylef/PathKit.git", from: "0.8.0"),
-        .package(url: "https://github.com/kylef/Stencil.git", from: "0.11.0"),
-        .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .branchItem("master")),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "0.7.0"),
+        .package(url: "https://github.com/kylef/PathKit.git", from: "0.9.2"),
+        .package(url: "https://github.com/kylef/Stencil.git", from: "0.13.1"),
+        .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", from: "2.7.2"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "1.0.1"),
     ],
     targets: [
         .target(name: "ModelGen", dependencies: [
@@ -21,6 +21,10 @@ let package = Package(
             "Stencil",
             "StencilSwiftKit",
             "Yams"
-        ], path: "Sources")
+        ], path: "Sources"),
+        .testTarget(
+            name: "CommandLineToolTests",
+            dependencies: ["ModelGen"],
+            path: "Tests")
     ]
 )

@@ -89,7 +89,7 @@ func parse(output: OutputDestination, template: String, lang: String, path: Path
       throw JsonParserError.missingTitle
     }
     let finalPath = Path(output.description) + "\(title.uppercaseFirst() + language.fileExtension)"
-    finalOutput = .file(finalPath)
+    finalOutput = .file(path: finalPath)
     finalOutput.write(content: rendered, onlyIfChanged: true)
   } catch let error {
     printError(error.localizedDescription, showFile: true, file: path.description)

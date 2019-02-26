@@ -19,7 +19,7 @@ let outputOption = Option<OutputDestination>("output", default: .console, flag: 
 
 // MARK: - Version
 
-let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.3.0"
+let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.4.0"
 
 // MARK: - Main
 
@@ -57,7 +57,7 @@ command(outputOption, templateOption, languageOption, specOption) { output, temp
       guard let output = config.output else {
         return .console
       }
-      return OutputDestination.file(Path(output))
+      return OutputDestination.file(path: Path(output))
     }
 
     try render(output: configOutput, template: configTemplate, lang: config.language ?? Language.swift.rawValue, path: Path(configSpec))
