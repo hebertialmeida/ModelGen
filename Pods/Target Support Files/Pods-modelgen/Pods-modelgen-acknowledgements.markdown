@@ -61,7 +61,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## Stencil
 
-Copyright (c) 2014, Kyle Fuller
+Copyright (c) 2018, Kyle Fuller
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -86,12 +86,11 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-
 ## StencilSwiftKit
 
-MIT License
+MIT Licence
 
-Copyright (c) 2017 SwiftGen
+Copyright (c) 2019 SwiftGen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

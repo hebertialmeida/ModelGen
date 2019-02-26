@@ -1,10 +1,11 @@
 //
 // StencilSwiftKit
-// Copyright (c) 2017 SwiftGen
+// Copyright © 2019 SwiftGen
 // MIT Licence
 //
 
 import Foundation
+import PathKit
 import Stencil
 
 // MARK: - Strings Filters
@@ -91,7 +92,7 @@ extension Filters.Strings {
     let scalars = string.unicodeScalars
     let start = scalars.startIndex
     var idx = start
-    while let scalar = UnicodeScalar(scalars[idx].value), characterSet.contains(scalar) && idx <= scalars.endIndex {
+    while idx < scalars.endIndex, let scalar = UnicodeScalar(scalars[idx].value), characterSet.contains(scalar) {
       idx = scalars.index(after: idx)
     }
     if idx > scalars.index(after: start) && idx < scalars.endIndex,
@@ -208,14 +209,18 @@ extension Filters.Strings {
     let camelCased = try NSRegularExpression(pattern: "([a-z\\d])([A-Z])", options: .dotMatchesLineSeparators)
 
     let fullRange = NSRange(location: 0, length: string.unicodeScalars.count)
-    var result = longUpper.stringByReplacingMatches(in: string,
-                                                    options: .reportCompletion,
-                                                    range: fullRange,
-                                                    withTemplate: "$1_$2")
-    result = camelCased.stringByReplacingMatches(in: result,
-                                                 options: .reportCompletion,
-                                                 range: fullRange,
-                                                 withTemplate: "$1_$2")
+    var result = longUpper.stringByReplacingMatches(
+      in: string,
+      options: .reportCompletion,
+      range: fullRange,
+      withTemplate: "$1_$2"
+    )
+    result = camelCased.stringByReplacingMatches(
+      in: result,
+      options: .reportCompletion,
+      range: fullRange,
+      withTemplate: "$1_$2"
+    )
     return result.replacingOccurrences(of: "-", with: "_")
   }
 }
@@ -294,7 +299,7 @@ extension Filters.Strings {
   /// - Throws: FilterError.invalidInputType if the value parameter isn't a string
   static func basename(_ value: Any?) throws -> Any? {
     let string = try Filters.parseString(from: value)
-    return (string as NSString).lastPathComponent
+    return Path(string).lastComponent
   }
 
   /// Converts a file path to just the path without the filename.
@@ -304,7 +309,18 @@ extension Filters.Strings {
   /// - Throws: FilterError.invalidInputType if the value parameter isn't a string
   static func dirname(_ value: Any?) throws -> Any? {
     let string = try Filters.parseString(from: value)
-    return (string as NSString).deletingLastPathComponent
+
+    #if os(Linux)
+    // `NSString.standardizingPath` crashes on Linux. Bug reference:
+    // https://github.com/apple/swift-corelibs-foundation/pull/1536
+    var result = NSString(string: string).deletingLastPathComponent
+    if result.isEmpty {
+      result = "."
+    }
+    return result
+    #else
+    return Path(string).parent().normalize().string
+    #endif
   }
 
   /// Removes newlines and other whitespace from a string. Takes an optional Mode argument:

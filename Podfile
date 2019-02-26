@@ -5,6 +5,6 @@ target 'ModelGen' do
   pod 'Commander', :git => 'https://github.com/kylef/Commander.git'
   pod 'PathKit', :inhibit_warnings => true
   pod 'Stencil', :inhibit_warnings => true
-  pod 'StencilSwiftKit', :git => 'https://github.com/SwiftGen/StencilSwiftKit.git'
+  pod 'StencilSwiftKit'
   pod 'Yams'
 end
