@@ -57,7 +57,7 @@ command(outputOption, templateOption, languageOption, specOption) { output, temp
       guard let output = config.output else {
         return .console
       }
-      return OutputDestination.file(Path(output))
+      return OutputDestination.file(path: Path(output))
     }
 
     try render(output: configOutput, template: configTemplate, lang: config.language ?? Language.swift.rawValue, path: Path(configSpec))

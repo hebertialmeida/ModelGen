@@ -5,6 +5,9 @@
       location = "container:"
       name = "Pod Metadata">
       <FileRef
+         location = "group:Package.swift">
+      </FileRef>
+      <FileRef
          location = "group:ModelGen.podspec">
       </FileRef>
       <FileRef
