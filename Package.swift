@@ -21,6 +21,10 @@ let package = Package(
             "Stencil",
             "StencilSwiftKit",
             "Yams"
-        ], path: "Sources")
+        ], path: "Sources"),
+        .testTarget(
+            name: "CommandLineToolTests",
+            dependencies: ["ModelGen"],
+            path: "Tests")
     ]
 )
