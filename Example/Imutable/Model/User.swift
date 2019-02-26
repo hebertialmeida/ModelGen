@@ -13,64 +13,64 @@ public struct User: Equatable {
 
     // MARK: Instance Variables
 
+    public let avatar: Avatar
+    public let companies: [Company]
+    public let createdAt: Date
+    public let currentCompanyId: Int
     public let email: String
+    public let fullName: String
     public let id: Int
     public let timezone: String?
-    public let companies: [Company]
-    public let fullName: String
-    public let createdAt: Date
-    public let avatar: Avatar
-    public let currentCompanyId: Int
 
     // MARK: - Initializers
 
-    public init(email: String, id: Int, timezone: String?, companies: [Company], fullName: String, createdAt: Date, avatar: Avatar, currentCompanyId: Int) {
+    public init(avatar: Avatar, companies: [Company], createdAt: Date, currentCompanyId: Int, email: String, fullName: String, id: Int, timezone: String?) {
+        self.avatar = avatar
+        self.companies = companies
+        self.createdAt = createdAt
+        self.currentCompanyId = currentCompanyId
         self.email = email
+        self.fullName = fullName
         self.id = id
         self.timezone = timezone
-        self.companies = companies
-        self.fullName = fullName
-        self.createdAt = createdAt
-        self.avatar = avatar
-        self.currentCompanyId = currentCompanyId
     }
 
     public init(unboxer: Unboxer) throws {
+        self.avatar = try unboxer.unbox(key: "avatar")
+        self.companies = try unboxer.unbox(key: "companies")
+        self.createdAt = try unboxer.unbox(key: "created_at", formatter: Date.serverDateFormatter())
+        self.currentCompanyId = try unboxer.unbox(key: "current_company_id")
         self.email = try unboxer.unbox(key: "email")
+        self.fullName = try unboxer.unbox(key: "full_name")
         self.id = try unboxer.unbox(key: "id")
         self.timezone =  unboxer.unbox(key: "timezone")
-        self.companies = try unboxer.unbox(key: "companies")
-        self.fullName = try unboxer.unbox(key: "full_name")
-        self.createdAt = try unboxer.unbox(key: "created_at", formatter: Date.serverDateFormatter())
-        self.avatar = try unboxer.unbox(key: "avatar")
-        self.currentCompanyId = try unboxer.unbox(key: "current_company_id")
     }
 
     // MARK: - Builder
 
     public struct Builder {
+        public var avatar: Avatar
+        public var companies: [Company]
+        public var createdAt: Date
+        public var currentCompanyId: Int
         public var email: String
+        public var fullName: String
         public var id: Int
         public var timezone: String?
-        public var companies: [Company]
-        public var fullName: String
-        public var createdAt: Date
-        public var avatar: Avatar
-        public var currentCompanyId: Int
 
         public init(copy: User) {
+            avatar = copy.avatar
+            companies = copy.companies
+            createdAt = copy.createdAt
+            currentCompanyId = copy.currentCompanyId
             email = copy.email
+            fullName = copy.fullName
             id = copy.id
             timezone = copy.timezone
-            companies = copy.companies
-            fullName = copy.fullName
-            createdAt = copy.createdAt
-            avatar = copy.avatar
-            currentCompanyId = copy.currentCompanyId
         }
 
         public func build() -> User {
-            return User(email: email, id: id, timezone: timezone, companies: companies, fullName: fullName, createdAt: createdAt, avatar: avatar, currentCompanyId: currentCompanyId)
+            return User(avatar: avatar, companies: companies, createdAt: createdAt, currentCompanyId: currentCompanyId, email: email, fullName: fullName, id: id, timezone: timezone)
         }
     }
 }
@@ -78,13 +78,13 @@ public struct User: Equatable {
 // MARK: - Equatable
 
 public func == (lhs: User, rhs: User) -> Bool {
+    guard lhs.avatar == rhs.avatar else { return false }
+    guard lhs.companies == rhs.companies else { return false }
+    guard lhs.createdAt == rhs.createdAt else { return false }
+    guard lhs.currentCompanyId == rhs.currentCompanyId else { return false }
     guard lhs.email == rhs.email else { return false }
+    guard lhs.fullName == rhs.fullName else { return false }
     guard lhs.id == rhs.id else { return false }
     guard lhs.timezone == rhs.timezone else { return false }
-    guard lhs.companies == rhs.companies else { return false }
-    guard lhs.fullName == rhs.fullName else { return false }
-    guard lhs.createdAt == rhs.createdAt else { return false }
-    guard lhs.avatar == rhs.avatar else { return false }
-    guard lhs.currentCompanyId == rhs.currentCompanyId else { return false }
     return true
 }

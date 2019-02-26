@@ -14,24 +14,24 @@ public class Company: Equatable {
     // MARK: Instance Variables
 
     public var id: Int
-    public var subdomain: String
-    public var name: String
     public var logo: URL?
+    public var name: String
+    public var subdomain: String
 
     // MARK: - Initializers
 
-    public init(id: Int, subdomain: String, name: String, logo: URL?) {
+    public init(id: Int, logo: URL?, name: String, subdomain: String) {
         self.id = id
-        self.subdomain = subdomain
-        self.name = name
         self.logo = logo
+        self.name = name
+        self.subdomain = subdomain
     }
 
     public init(unboxer: Unboxer) throws {
         self.id = try unboxer.unbox(key: "id")
-        self.subdomain = try unboxer.unbox(key: "subdomain")
-        self.name = try unboxer.unbox(key: "name")
         self.logo =  unboxer.unbox(key: "logo")
+        self.name = try unboxer.unbox(key: "name")
+        self.subdomain = try unboxer.unbox(key: "subdomain")
     }
 }
 
@@ -39,8 +39,8 @@ public class Company: Equatable {
 
 public func == (lhs: Company, rhs: Company) -> Bool {
     guard lhs.id == rhs.id else { return false }
-    guard lhs.subdomain == rhs.subdomain else { return false }
-    guard lhs.name == rhs.name else { return false }
     guard lhs.logo == rhs.logo else { return false }
+    guard lhs.name == rhs.name else { return false }
+    guard lhs.subdomain == rhs.subdomain else { return false }
     return true
 }

@@ -13,44 +13,44 @@ public struct Company: Equatable {
 
     // MARK: Instance Variables
 
-    public let logo: URL?
     public let id: Int
-    public let subdomain: String
+    public let logo: URL?
     public let name: String
+    public let subdomain: String
 
     // MARK: - Initializers
 
-    public init(logo: URL?, id: Int, subdomain: String, name: String) {
-        self.logo = logo
+    public init(id: Int, logo: URL?, name: String, subdomain: String) {
         self.id = id
-        self.subdomain = subdomain
+        self.logo = logo
         self.name = name
+        self.subdomain = subdomain
     }
 
     public init(unboxer: Unboxer) throws {
-        self.logo =  unboxer.unbox(key: "logo")
         self.id = try unboxer.unbox(key: "id")
-        self.subdomain = try unboxer.unbox(key: "subdomain")
+        self.logo =  unboxer.unbox(key: "logo")
         self.name = try unboxer.unbox(key: "name")
+        self.subdomain = try unboxer.unbox(key: "subdomain")
     }
 
     // MARK: - Builder
 
     public struct Builder {
-        public var logo: URL?
         public var id: Int
-        public var subdomain: String
+        public var logo: URL?
         public var name: String
+        public var subdomain: String
 
         public init(copy: Company) {
-            logo = copy.logo
             id = copy.id
-            subdomain = copy.subdomain
+            logo = copy.logo
             name = copy.name
+            subdomain = copy.subdomain
         }
 
         public func build() -> Company {
-            return Company(logo: logo, id: id, subdomain: subdomain, name: name)
+            return Company(id: id, logo: logo, name: name, subdomain: subdomain)
         }
     }
 }
@@ -58,9 +58,9 @@ public struct Company: Equatable {
 // MARK: - Equatable
 
 public func == (lhs: Company, rhs: Company) -> Bool {
-    guard lhs.logo == rhs.logo else { return false }
     guard lhs.id == rhs.id else { return false }
-    guard lhs.subdomain == rhs.subdomain else { return false }
+    guard lhs.logo == rhs.logo else { return false }
     guard lhs.name == rhs.name else { return false }
+    guard lhs.subdomain == rhs.subdomain else { return false }
     return true
 }

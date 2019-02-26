@@ -15,24 +15,24 @@ public struct Company: BaseModel, Equatable {
     // MARK: Instance Variables
 
     public let id: Int
+    public let logo: URL?
     public let name: String
     public let subdomain: String
-    public let logo: URL?
 
     // MARK: - Initializers
 
-    public init(id: Int, name: String, subdomain: String, logo: URL?) {
+    public init(id: Int, logo: URL?, name: String, subdomain: String) {
         self.id = id
+        self.logo = logo
         self.name = name
         self.subdomain = subdomain
-        self.logo = logo
     }
 
     public init(unboxer: Unboxer) throws {
         self.id = try unboxer.unbox(key: "id")
+        self.logo =  unboxer.unbox(key: "logo")
         self.name = try unboxer.unbox(key: "name")
         self.subdomain = try unboxer.unbox(key: "subdomain")
-        self.logo =  unboxer.unbox(key: "logo")
     }
 
     // MARK: - Rocket Data Model
@@ -52,19 +52,19 @@ public struct Company: BaseModel, Equatable {
 
     public struct Builder {
         public var id: Int
+        public var logo: URL?
         public var name: String
         public var subdomain: String
-        public var logo: URL?
 
         public init(copy: Company) {
             id = copy.id
+            logo = copy.logo
             name = copy.name
             subdomain = copy.subdomain
-            logo = copy.logo
         }
 
         public func build() -> Company {
-            return Company(id: id, name: name, subdomain: subdomain, logo: logo)
+            return Company(id: id, logo: logo, name: name, subdomain: subdomain)
         }
     }
 }
@@ -73,8 +73,8 @@ public struct Company: BaseModel, Equatable {
 
 public func == (lhs: Company, rhs: Company) -> Bool {
     guard lhs.id == rhs.id else { return false }
+    guard lhs.logo == rhs.logo else { return false }
     guard lhs.name == rhs.name else { return false }
     guard lhs.subdomain == rhs.subdomain else { return false }
-    guard lhs.logo == rhs.logo else { return false }
     return true
 }
