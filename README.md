@@ -33,7 +33,7 @@ $ brew tap hebertialmeida/ModelGen https://github.com/hebertialmeida/ModelGen.gi
 $ brew install ModelGen
 ```
 
-#### Manually
+### Manually
 
 Run the following commands to build and install manually:
 
