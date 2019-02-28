@@ -18,15 +18,29 @@ The Models are defined in JSON, based on JSON Schema but not limited to, basical
 
 Take a look at [Example](/Example) folder.
 
+## Requirements
+
+- Xcode 10.0+ and Swift 4.2+
+
 ## Installation
 
-Make sure Xcode 9.3+ is installed first.
-
 ### Homebrew
+
+Run the following command to install using [homebrew](https://brew.sh/):
 
 ```sh
 $ brew tap hebertialmeida/ModelGen https://github.com/hebertialmeida/ModelGen.git
 $ brew install ModelGen
+```
+
+#### Manually
+
+Run the following commands to build and install manually:
+
+```terminal
+$ git clone https://github.com/hebertialmeida/ModelGen.git
+$ cd ModelGen
+$ make install
 ```
 
 ## Defining a schema
