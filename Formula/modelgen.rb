@@ -2,8 +2,8 @@ class Modelgen < Formula
   desc "Swift CLI to generate Models based on a JSON Schema and a template."
   homepage "https://github.com/hebertialmeida/ModelGen"
   url "https://github.com/hebertialmeida/ModelGen.git", 
-    :tag => "0.4.0",
-    :revision => "5d4bb5ab8d8ba95098c8326ae1641e03e521ed3d"
+    :tag => "0.5.0",
+    :revision => "af78ff30926722ac381950704bef53495f517d05"
   head "https://github.com/hebertialmeida/ModelGen.git"
 
   depends_on :xcode => ["10.1", :build]
