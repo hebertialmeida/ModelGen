@@ -15,16 +15,23 @@ let package = Package(
         .package(url: "https://github.com/jpsim/Yams.git", from: "1.0.1"),
     ],
     targets: [
-        .target(name: "ModelGen", dependencies: [
-            "Commander",
-            "PathKit",
-            "Stencil",
-            "StencilSwiftKit",
-            "Yams"
-        ], path: "Sources"),
+        .target(
+            name: "ModelGen", 
+            dependencies: [
+                "Commander",
+                "PathKit",
+                "Stencil",
+                "StencilSwiftKit",
+                "Yams"
+            ],
+            path: "Sources",
+            exclude: ["Formula", "Example"]
+        ),
         .testTarget(
             name: "CommandLineToolTests",
             dependencies: ["ModelGen"],
-            path: "Tests")
+            path: "Tests",
+            exclude: ["Formula", "Example"]
+        )
     ]
 )
