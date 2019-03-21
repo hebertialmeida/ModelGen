@@ -11,7 +11,6 @@ import XCTest
 class YamlParserTest: XCTestCase {
 
     private(set) var yaml: String!
-    private(set) var parsed: [String: Any]!
 
     override func setUp() {
         yaml = """
@@ -21,23 +20,30 @@ class YamlParserTest: XCTestCase {
         template: template.stencil
         language: swift # Only swift is supported right know
         """
+    }
 
-        parsed = try! YamlParser.parse(yaml)
+    func testParserInit() {
+        let parsed = try? YamlParser.parse(yaml)
+        XCTAssertNotNil(parsed)
     }
 
     func testYamlParserSpec() {
-        XCTAssertEqual(parsed["spec"] as? String, "../Specs/")
+        let parsed = try? YamlParser.parse(yaml)
+        XCTAssertEqual(parsed?["spec"] as? String, "../Specs/")
     }
 
     func testYamlParserOutput() {
-        XCTAssertEqual(parsed["output"] as? String, "./Model/")
+        let parsed = try? YamlParser.parse(yaml)
+        XCTAssertEqual(parsed?["output"] as? String, "./Model/")
     }
 
     func testYamlParserTemplate() {
-        XCTAssertEqual(parsed["template"] as? String, "template.stencil")
+        let parsed = try? YamlParser.parse(yaml)
+        XCTAssertEqual(parsed?["template"] as? String, "template.stencil")
     }
 
     func testYamlParserLanguage() {
-        XCTAssertEqual(parsed["language"] as? String, "swift")
+        let parsed = try? YamlParser.parse(yaml)
+        XCTAssertEqual(parsed?["language"] as? String, "swift")
     }
 }
