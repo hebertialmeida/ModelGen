@@ -10,7 +10,7 @@ import Foundation
 import Yams
 
 public struct YamlParser {
-    public static func parse(_ yaml: String, env: [String: String] = ProcessInfo.processInfo.environment) throws -> [String: Any] {
+    public static func parse(_ yaml: String) throws -> [String: Any] {
         do {
             return try Yams.load(yaml: yaml, .default, Constructor.default) as? [String: Any] ?? [:]
         } catch {
