@@ -39,8 +39,8 @@ command(outputOption, templateOption, languageOption, specOption) { output, temp
     do {
         let yamlContents = try yamlPath.read(.utf8)
         let dict = try YamlParser.parse(yamlContents)
-        guard let config = Configuration(dictionary: dict) else {
-            printError("Error creating configuration")
+        guard let config = try? Configuration(from: dict) else {
+            printError("Unable to use the .modelgen.yml file to create a configuration.")
             exit(1)
         }
 

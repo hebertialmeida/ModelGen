@@ -8,16 +8,9 @@
 
 import Foundation
 
-public struct Configuration {
+public struct Configuration: Codable {
     public let spec: String?
     public let template: String?
     public let language: String?
     public let output: String?
-
-    public init?(dictionary: [String: Any]) {
-        self.spec = dictionary["spec"] as? String
-        self.template = dictionary["template"] as? String
-        self.language = dictionary["language"] as? String
-        self.output = dictionary["output"] as? String
-    }
 }

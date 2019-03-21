@@ -99,7 +99,7 @@ func validate(_ template: String) throws -> Path {
 // MARK: - Decode from dictionary
 
 extension Decodable {
-    init(from: Any) throws {
+    public init(from: Any) throws {
         let data = try JSONSerialization.data(withJSONObject: from, options: .prettyPrinted)
         let decoder = JSONDecoder()
         self = try decoder.decode(Self.self, from: data)
