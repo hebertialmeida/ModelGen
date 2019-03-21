@@ -22,27 +22,28 @@ class ConfigurationTest: XCTestCase {
     }
 
     func testInitConfiguration() {
-        let config = Configuration(dictionary: dictionary)
-        XCTAssertNotNil(config)
+        XCTAssertNoThrow(try Configuration(from: dictionary))
+    }
+
+    func testInitInvalidConfiguration() {
+        let invalidDictionary = ["spec": 1]
+
+        XCTAssertThrowsError(try Configuration(from: invalidDictionary))
     }
 
     func testConfigurationSpec() {
-        let config = Configuration(dictionary: dictionary)
-        XCTAssertEqual(config?.spec, "../Specs/")
+        XCTAssertEqual(try Configuration(from: dictionary).spec, "../Specs/")
     }
 
     func testConfigurationOutput() {
-        let config = Configuration(dictionary: dictionary)
-        XCTAssertEqual(config?.output, "./Model/")
+        XCTAssertEqual(try Configuration(from: dictionary).output, "./Model/")
     }
 
     func testConfigurationTemplate() {
-        let config = Configuration(dictionary: dictionary)
-        XCTAssertEqual(config?.template, "template.stencil")
+        XCTAssertEqual(try Configuration(from: dictionary).template, "template.stencil")
     }
 
     func testConfigurationLanguage() {
-        let config = Configuration(dictionary: dictionary)
-        XCTAssertEqual(config?.language, "swift")
+        XCTAssertEqual(try Configuration(from: dictionary).language, "swift")
     }
 }

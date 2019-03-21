@@ -23,27 +23,31 @@ class YamlParserTest: XCTestCase {
     }
 
     func testParserInit() {
-        let parsed = try? YamlParser.parse(yaml)
-        XCTAssertNotNil(parsed)
+        XCTAssertNoThrow(try YamlParser.parse(yaml))
+    }
+
+    func testParserInvalidInit() {
+        let invalidYaml = """
+        \\
+        spec: ../Specs/
+        """
+
+        XCTAssertThrowsError(try YamlParser.parse(invalidYaml))
     }
 
     func testYamlParserSpec() {
-        let parsed = try? YamlParser.parse(yaml)
-        XCTAssertEqual(parsed?["spec"] as? String, "../Specs/")
+        XCTAssertEqual(try YamlParser.parse(yaml)["spec"] as? String, "../Specs/")
     }
 
     func testYamlParserOutput() {
-        let parsed = try? YamlParser.parse(yaml)
-        XCTAssertEqual(parsed?["output"] as? String, "./Model/")
+        XCTAssertEqual(try YamlParser.parse(yaml)["output"] as? String, "./Model/")
     }
 
     func testYamlParserTemplate() {
-        let parsed = try? YamlParser.parse(yaml)
-        XCTAssertEqual(parsed?["template"] as? String, "template.stencil")
+        XCTAssertEqual(try YamlParser.parse(yaml)["template"] as? String, "template.stencil")
     }
 
     func testYamlParserLanguage() {
-        let parsed = try? YamlParser.parse(yaml)
-        XCTAssertEqual(parsed?["language"] as? String, "swift")
+        XCTAssertEqual(try YamlParser.parse(yaml)["language"] as? String, "swift")
     }
 }
