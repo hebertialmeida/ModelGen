@@ -27,7 +27,7 @@ enum StringFormatType: String {
 
 // MARK: Schema
 
-public class SchemaProperty {
+public class SchemaProperty: Codable {
     let type: String?
     let description: String?
     let format: String?
@@ -35,23 +35,13 @@ public class SchemaProperty {
     let items: SchemaProperty?
     let additionalProperties: SchemaProperty?
 
-    init(dictionary: [String: Any]) throws {
-        self.type = dictionary["type"] as? String
-        self.description = dictionary["description"] as? String
-        self.format = dictionary["format"] as? String
-        self.ref = dictionary["$ref"] as? String
-
-        if let items = dictionary["items"] as? [String: Any] {
-            self.items = try SchemaProperty(dictionary: items)
-        } else {
-            self.items = nil
-        }
-
-        if let additionalProperties = dictionary["additionalProperties"] as? [String: Any] {
-            self.additionalProperties = try SchemaProperty(dictionary: additionalProperties)
-        } else {
-            self.additionalProperties = nil
-        }
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case description
+        case format
+        case ref = "$ref"
+        case items
+        case additionalProperties
     }
 }
 

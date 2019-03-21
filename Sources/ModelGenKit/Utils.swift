@@ -6,6 +6,7 @@
 //  Copyright © 2017 ModelGen. All rights reserved.
 //
 
+import Foundation
 import Commander
 import PathKit
 
@@ -93,4 +94,14 @@ func validate(_ template: String) throws -> Path {
         throw TemplateError.templatePathNotFound(path: templatePath)
     }
     return templatePath
+}
+
+// MARK: - Decode from dictionary
+
+extension Decodable {
+    init(from: Any) throws {
+        let data = try JSONSerialization.data(withJSONObject: from, options: .prettyPrinted)
+        let decoder = JSONDecoder()
+        self = try decoder.decode(Self.self, from: data)
+    }
 }
