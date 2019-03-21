@@ -2,6 +2,8 @@
 
 **ModelGen** is a command-line tool for generating models from JSON Schemas. 
 
+[![codecov](https://codecov.io/gh/hebertialmeida/ModelGen/branch/master/graph/badge.svg)](https://codecov.io/gh/hebertialmeida/ModelGen)
+
 ## Why?
 
 Models are usually boilerplate code, why not generate them and forget? It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
