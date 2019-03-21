@@ -16,7 +16,7 @@ public enum JsonParserError: Error, LocalizedError {
 
     public var errorDescription: String? {
         switch self {
-        case .invalidFile(reason: let reason):
+        case let .invalidFile(reason):
             return "Unable to parse file. \(reason)"
         case .missingProperties:
             return "Missing property \"properties\" on json file"
@@ -97,33 +97,23 @@ public enum ANSI: UInt8, CustomStringConvertible {
     }
 }
 
-public func printError(_ string: String, showFile: Bool = false, file: String? = nil) {
-    guard showFile else {
-        let message = "❌  Error: \(string)"
-        fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
-        exit(1)
-    }
-    let message = "❌  \(file ?? currentFile.description): \(string)"
-    fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
+func fputs(_ message: String, color: ANSI, shouldExit: Bool = false) {
+    fputs("\(color)\(message)\(ANSI.reset)\n", stderr)
+    guard shouldExit else { return }
     exit(1)
 }
 
+public func printError(_ string: String, showFile: Bool = false, file: String? = nil) {
+    let message = showFile ? "❌ \(file ?? currentFile.description): \(string)" : "❌ Error: \(string)"
+    fputs(message, color: .red, shouldExit: true)
+}
+
 public func printWarning(_ string: String, showFile: Bool = false, file: String? = nil) {
-    guard showFile else {
-        let message = "⚠️  Warning: \(string)"
-        fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
-        return
-    }
-    let message = "⚠️  \(file ?? currentFile.description): \(string)"
-    fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
+    let message = showFile ? "⚠️ \(file ?? currentFile.description): \(string)" : "⚠️ Warning: \(string)"
+    fputs(message, color: .red)
 }
 
 public func printSuccess(_ string: String, showFile: Bool = false, file: String? = nil) {
-    guard showFile else {
-        let message = "\(string)"
-        fputs("\(ANSI.green)\(message)\(ANSI.reset)\n", stderr)
-        return
-    }
-    let message = "\(file ?? currentFile.description): \(string)"
-    fputs("\(ANSI.green)\(message)\(ANSI.reset)\n", stderr)
+    let message = showFile ? "\(file ?? currentFile.description): \(string)" : string
+    fputs(message, color: .green)
 }
