@@ -11,10 +11,13 @@ import Yams
 
 public struct YamlParser {
     public static func parse(_ yaml: String) throws -> [String: Any] {
-        do {
-            return try Yams.load(yaml: yaml, .default, Constructor.default) as? [String: Any] ?? [:]
-        } catch {
-            throw YamlParserError.invalidFile(reason: "\(error)")
+        guard
+            let load = try? Yams.load(yaml: yaml, .default, Constructor.default),
+            let dic = load as? [String: Any]
+        else {
+            throw YamlParserError.invalidFile
         }
+
+        return dic
     }
 }

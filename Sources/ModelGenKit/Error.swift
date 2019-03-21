@@ -27,14 +27,14 @@ public enum JsonParserError: Error, LocalizedError {
 }
 
 public enum YamlParserError: Error, LocalizedError {
-    case invalidFile(reason: String)
+    case invalidFile
     case missingSpecPath
     case missingTemplate
 
     public var errorDescription: String? {
         switch self {
-        case .invalidFile(reason: let reason):
-            return "Unable to parse file. \(reason)"
+        case .invalidFile:
+            return "Unable to parse .yml file"
         case .missingSpecPath:
             return "You must provide the spec folder or file"
         case .missingTemplate:

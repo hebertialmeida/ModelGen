@@ -32,7 +32,7 @@ class YamlParserTest: XCTestCase {
         spec: ../Specs/
         """
 
-        XCTAssertThrowsError(try YamlParser.parse(invalidYaml))
+        XCTAssertThrowsError(try YamlParser.parse(invalidYaml), type: YamlParserError.invalidFile)
     }
 
     func testYamlParserSpec() {
