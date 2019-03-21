@@ -35,7 +35,7 @@ public final class JsonParser {
 
 // MARK: Parser
 
-func render(output: OutputDestination, template: String, lang: String, path: Path) throws {
+public func render(output: OutputDestination, template: String, lang: String, path: Path) throws {
     guard path.isDirectory else {
         do {
             try parse(output: output, template: template, lang: lang, path: path)
@@ -65,7 +65,7 @@ func render(output: OutputDestination, template: String, lang: String, path: Pat
 ///   - lang: Language to generate files
 ///   - path: Spec path, folder or file.json
 /// - Throws: Error if something happens
-func parse(output: OutputDestination, template: String, lang: String, path: Path) throws {
+public func parse(output: OutputDestination, template: String, lang: String, path: Path) throws {
     let parser = JsonParser()
     var finalOutput = output
     jsonAbsolutePath = Path(NSString(string: path.description).deletingLastPathComponent)

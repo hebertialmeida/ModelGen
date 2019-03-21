@@ -9,14 +9,14 @@
 import Foundation
 import PathKit
 
-enum JsonParserError: Error, LocalizedError {
+public enum JsonParserError: Error, LocalizedError {
     case invalidFile(reason: String)
     case missingProperties
     case missingTitle
 
     public var errorDescription: String? {
         switch self {
-        case .invalidFile(reason: let reason):
+        case let .invalidFile(reason):
             return "Unable to parse file. \(reason)"
         case .missingProperties:
             return "Missing property \"properties\" on json file"
@@ -26,15 +26,15 @@ enum JsonParserError: Error, LocalizedError {
     }
 }
 
-enum YamlParserError: Error, LocalizedError {
-    case invalidFile(reason: String)
+public enum YamlParserError: Error, LocalizedError {
+    case invalidFile
     case missingSpecPath
     case missingTemplate
 
     public var errorDescription: String? {
         switch self {
-        case .invalidFile(reason: let reason):
-            return "Unable to parse file. \(reason)"
+        case .invalidFile:
+            return "Unable to parse .yml file"
         case .missingSpecPath:
             return "You must provide the spec folder or file"
         case .missingTemplate:
@@ -43,7 +43,7 @@ enum YamlParserError: Error, LocalizedError {
     }
 }
 
-enum SchemaError: Error, LocalizedError {
+public enum SchemaError: Error, LocalizedError {
     case missingAdditionalProperties
     case missingItems
     case missingType
@@ -63,7 +63,7 @@ enum SchemaError: Error, LocalizedError {
     }
 }
 
-enum TemplateError: Error, LocalizedError {
+public enum TemplateError: Error, LocalizedError {
     case templatePathNotFound(path: Path)
     case noTemplateProvided
 
@@ -79,7 +79,7 @@ enum TemplateError: Error, LocalizedError {
 
 // MARK: Colored errors support
 
-enum ANSI: UInt8, CustomStringConvertible {
+public enum ANSI: UInt8, CustomStringConvertible {
     case reset = 0
 
     case black = 30
@@ -92,38 +92,28 @@ enum ANSI: UInt8, CustomStringConvertible {
     case white
     case `default`
 
-    var description: String {
+    public var description: String {
         return "\u{001B}[\(self.rawValue)m"
     }
 }
 
-func printError(_ string: String, showFile: Bool = false, file: String? = nil) {
-    guard showFile else {
-        let message = "❌  Error: \(string)"
-        fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
-        exit(1)
-    }
-    let message = "❌  \(file ?? currentFile.description): \(string)"
-    fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
+func fputs(_ message: String, color: ANSI, shouldExit: Bool = false) {
+    fputs("\(color)\(message)\(ANSI.reset)\n", stderr)
+    guard shouldExit else { return }
     exit(1)
 }
 
-func printWarning(_ string: String, showFile: Bool = false, file: String? = nil) {
-    guard showFile else {
-        let message = "⚠️  Warning: \(string)"
-        fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
-        return
-    }
-    let message = "⚠️  \(file ?? currentFile.description): \(string)"
-    fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
+public func printError(_ string: String, showFile: Bool = false, file: String? = nil) {
+    let message = showFile ? "❌ \(file ?? currentFile.description): \(string)" : "❌ Error: \(string)"
+    fputs(message, color: .red, shouldExit: true)
 }
 
-func printSuccess(_ string: String, showFile: Bool = false, file: String? = nil) {
-    guard showFile else {
-        let message = "\(string)"
-        fputs("\(ANSI.green)\(message)\(ANSI.reset)\n", stderr)
-        return
-    }
-    let message = "\(file ?? currentFile.description): \(string)"
-    fputs("\(ANSI.green)\(message)\(ANSI.reset)\n", stderr)
+public func printWarning(_ string: String, showFile: Bool = false, file: String? = nil) {
+    let message = showFile ? "⚠️ \(file ?? currentFile.description): \(string)" : "⚠️ Warning: \(string)"
+    fputs(message, color: .red)
+}
+
+public func printSuccess(_ string: String, showFile: Bool = false, file: String? = nil) {
+    let message = showFile ? "\(file ?? currentFile.description): \(string)" : string
+    fputs(message, color: .green)
 }

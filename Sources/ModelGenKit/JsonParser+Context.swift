@@ -44,7 +44,8 @@ extension JsonParser {
         guard let items = json["properties"] as? [JSON] else {
             throw JsonParserError.missingProperties
         }
-        properties = try items.map { try SchemaProperty(dictionary: $0) }
+
+        properties = try items.map { try SchemaProperty(from: $0) }
     }
 
     private func prepareContextFor(_ language: Language) throws {
