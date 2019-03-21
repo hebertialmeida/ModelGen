@@ -23,7 +23,7 @@ func checkPath(type: String, assertion: @escaping (Path) -> Bool) -> ((Path) thr
     }
 }
 
-let pathExists = checkPath(type: "path") { $0.exists }
+public let pathExists = checkPath(type: "path") { $0.exists }
 let fileExists = checkPath(type: "file") { $0.isFile }
 let dirExists  = checkPath(type: "directory") { $0.isDirectory }
 let pathsExist = { (paths: [Path]) throws -> [Path] in try paths.map(pathExists) }
@@ -43,17 +43,18 @@ extension Path: ArgumentConvertible {
 
 // MARK: - Output (Path or Console) Argument
 
-enum OutputDestination: ArgumentConvertible {
+public enum OutputDestination: ArgumentConvertible {
     case console
     case file(path: Path)
 
-    init(parser: ArgumentParser) throws {
+    public init(parser: ArgumentParser) throws {
         guard let path = parser.shift() else {
             throw ArgumentError.missingValue(argument: nil)
         }
         self = .file(path: Path(path))
     }
-    var description: String {
+
+    public var description: String {
         switch self {
         case .console: return "(stdout)"
         case .file(let path): return path.description

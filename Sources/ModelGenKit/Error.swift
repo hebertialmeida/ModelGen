@@ -9,7 +9,7 @@
 import Foundation
 import PathKit
 
-enum JsonParserError: Error, LocalizedError {
+public enum JsonParserError: Error, LocalizedError {
     case invalidFile(reason: String)
     case missingProperties
     case missingTitle
@@ -26,7 +26,7 @@ enum JsonParserError: Error, LocalizedError {
     }
 }
 
-enum YamlParserError: Error, LocalizedError {
+public enum YamlParserError: Error, LocalizedError {
     case invalidFile(reason: String)
     case missingSpecPath
     case missingTemplate
@@ -43,7 +43,7 @@ enum YamlParserError: Error, LocalizedError {
     }
 }
 
-enum SchemaError: Error, LocalizedError {
+public enum SchemaError: Error, LocalizedError {
     case missingAdditionalProperties
     case missingItems
     case missingType
@@ -63,7 +63,7 @@ enum SchemaError: Error, LocalizedError {
     }
 }
 
-enum TemplateError: Error, LocalizedError {
+public enum TemplateError: Error, LocalizedError {
     case templatePathNotFound(path: Path)
     case noTemplateProvided
 
@@ -79,7 +79,7 @@ enum TemplateError: Error, LocalizedError {
 
 // MARK: Colored errors support
 
-enum ANSI: UInt8, CustomStringConvertible {
+public enum ANSI: UInt8, CustomStringConvertible {
     case reset = 0
 
     case black = 30
@@ -92,12 +92,12 @@ enum ANSI: UInt8, CustomStringConvertible {
     case white
     case `default`
 
-    var description: String {
+    public var description: String {
         return "\u{001B}[\(self.rawValue)m"
     }
 }
 
-func printError(_ string: String, showFile: Bool = false, file: String? = nil) {
+public func printError(_ string: String, showFile: Bool = false, file: String? = nil) {
     guard showFile else {
         let message = "❌  Error: \(string)"
         fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
@@ -108,7 +108,7 @@ func printError(_ string: String, showFile: Bool = false, file: String? = nil) {
     exit(1)
 }
 
-func printWarning(_ string: String, showFile: Bool = false, file: String? = nil) {
+public func printWarning(_ string: String, showFile: Bool = false, file: String? = nil) {
     guard showFile else {
         let message = "⚠️  Warning: \(string)"
         fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
@@ -118,7 +118,7 @@ func printWarning(_ string: String, showFile: Bool = false, file: String? = nil)
     fputs("\(ANSI.red)\(message)\(ANSI.reset)\n", stderr)
 }
 
-func printSuccess(_ string: String, showFile: Bool = false, file: String? = nil) {
+public func printSuccess(_ string: String, showFile: Bool = false, file: String? = nil) {
     guard showFile else {
         let message = "\(string)"
         fputs("\(ANSI.green)\(message)\(ANSI.reset)\n", stderr)

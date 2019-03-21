@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct Configuration {
-    let spec: String?
-    let template: String?
-    let language: String?
-    let output: String?
+public struct Configuration {
+    public let spec: String?
+    public let template: String?
+    public let language: String?
+    public let output: String?
 
-    init?(dictionary: [String: Any]) {
+    public init?(dictionary: [String: Any]) {
         self.spec = dictionary["spec"] as? String
         self.template = dictionary["template"] as? String
         self.language = dictionary["language"] as? String

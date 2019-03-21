@@ -9,6 +9,7 @@
 import Foundation
 import Commander
 import PathKit
+import ModelGenKit
 
 // MARK: - Options
 

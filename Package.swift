@@ -5,7 +5,8 @@ import PackageDescription
 let package = Package(
     name: "ModelGen",
     products: [
-        .executable(name: "modelgen", targets: ["ModelGen"])
+        .executable(name: "modelgen", targets: ["ModelGen"]),
+        .library(name: "ModelGenKit", targets: ["ModelGenKit"])
     ],
     dependencies: [
         .package(url: "https://github.com/kylef/Commander.git", from: "0.8.0"),
@@ -16,22 +17,22 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "ModelGen", 
+            name: "ModelGenKit",
             dependencies: [
                 "Commander",
                 "PathKit",
                 "Stencil",
                 "StencilSwiftKit",
                 "Yams"
-            ],
-            path: "Sources",
-            exclude: ["Formula", "Example"]
+            ]
+        ),
+        .target(
+            name: "ModelGen",
+            dependencies: ["ModelGenKit"]
         ),
         .testTarget(
-            name: "CommandLineToolTests",
-            dependencies: ["ModelGen"],
-            path: "Tests",
-            exclude: ["Formula", "Example"]
+            name: "ModelGenTests",
+            dependencies: ["ModelGenKit"]
         )
     ]
 )
