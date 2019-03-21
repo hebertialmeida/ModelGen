@@ -39,7 +39,7 @@ protocol LanguageType {
 }
 
 enum SwiftType: String, LanguageType {
-    case dictionary = "[String: %@]"
+    case dictionary = "[AnyHashable: %@]"
     case array = "[%@]"
     case string = "String"
     case integer = "Int"
