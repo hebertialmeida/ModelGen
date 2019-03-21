@@ -35,36 +35,31 @@ command(outputOption, templateOption, languageOption, specOption) { output, temp
     }
 
     let yamlPath = Path(".modelgen.yml")
-
-    do {
-        let yamlContents = try yamlPath.read(.utf8)
-        let dict = try YamlParser.parse(yamlContents)
-        guard let config = try? Configuration(from: dict) else {
-            printError("Unable to use the .modelgen.yml file to create a configuration.")
-            exit(1)
-        }
-
-        guard let configSpec = config.spec else {
-            printError(YamlParserError.missingSpecPath.localizedDescription)
-            exit(1)
-        }
-
-        guard let configTemplate = config.template else {
-            printError(YamlParserError.missingTemplate.localizedDescription)
-            exit(1)
-        }
-
-        var configOutput: OutputDestination {
-            guard let output = config.output else {
-                return .console
-            }
-            return OutputDestination.file(path: Path(output))
-        }
-
-        try render(output: configOutput, template: configTemplate, lang: config.language ?? Language.swift.rawValue, path: Path(configSpec))
-        exit(0)
-    } catch {
-        printError(error.localizedDescription)
+    let yamlContents = try yamlPath.read(.utf8)
+    let dict = try YamlParser.parse(yamlContents)
+    guard let config = try? Configuration(from: dict) else {
+        printError("Unable to use the .modelgen.yml file to create a configuration.")
+        exit(1)
     }
+
+    guard let configSpec = config.spec else {
+        printError(YamlParserError.missingSpecPath.localizedDescription)
+        exit(1)
+    }
+
+    guard let configTemplate = config.template else {
+        printError(YamlParserError.missingTemplate.localizedDescription)
+        exit(1)
+    }
+
+    var configOutput: OutputDestination {
+        guard let output = config.output else {
+            return .console
+        }
+        return OutputDestination.file(path: Path(output))
+    }
+
+    try render(output: configOutput, template: configTemplate, lang: config.language ?? Language.swift.rawValue, path: Path(configSpec))
+    exit(0)
 
 }.run("ModelGen v\(version)")
