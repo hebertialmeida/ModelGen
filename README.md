@@ -2,7 +2,7 @@
 
 **ModelGen** is a command-line tool for generating models from JSON Schemas. 
 
-[![codecov](https://codecov.io/gh/hebertialmeida/ModelGen/branch/master/graph/badge.svg)](https://codecov.io/gh/hebertialmeida/ModelGen)
+[![Build Status](https://travis-ci.org/hebertialmeida/ModelGen.svg?branch=master)](https://travis-ci.org/hebertialmeida/ModelGen) ![GitHub](https://img.shields.io/github/license/hebertialmeida/modelgen.svg?color=%234c1) [![codecov](https://codecov.io/gh/hebertialmeida/ModelGen/branch/master/graph/badge.svg)](https://codecov.io/gh/hebertialmeida/ModelGen)
 
 ## Why?
 
