@@ -81,7 +81,7 @@ ModelGen takes a template to generate in the format you want.
 {% if spec.description %}
 /// {{ spec.description }}
 {% endif %}
-public struct {{ spec.title }}: Equatable {
+public struct {{ spec.title }} {
 {% for property in spec.properties %}
 {% if property.doc %}
     /**
@@ -99,16 +99,18 @@ public struct {{ spec.title }}: Equatable {
         self.{{ property.name }} = {{ property.name }}
 {% endfor %}
     }
+}
 
 // MARK: - Equatable
 
-public func == (lhs: {{spec.title}}, rhs: {{spec.title}}) -> Bool {
+extension {{ spec.title }}: Equatable {
+    static public func == (lhs: {{spec.title}}, rhs: {{spec.title}}) -> Bool {
 {% for property in spec.properties %}
-    guard lhs.{{property.name}} == rhs.{{property.name}} else { return false }
+        guard lhs.{{property.name}} == rhs.{{property.name}} else { return false }
 {% endfor %}
-    return true
+        return true
+    }
 }
-
 ```
 
 ## Generating models
@@ -153,29 +155,32 @@ $ modelgen --spec company.json --template template.stencil --output Company.swif
 //
 
 /// Definition of a Company
-public struct Company: Equatable {
-    public let subdomain: String
-    public let name: String
-    public let logo: URL?
+public struct Company {
     public let id: Int
+    public let logo: URL?
+    public let name: String
+    public let subdomain: String
 
     // MARK: - Initializers
 
-    public init(subdomain: String, name: String, logo: URL?, id: Int) {
-        self.subdomain = subdomain
-        self.name = name
-        self.logo = logo
+    public init(id: Int, logo: URL?, name: String, subdomain: String) {
         self.id = id
+        self.logo = logo
+        self.name = name
+        self.subdomain = subdomain
     }
+}
 
 // MARK: - Equatable
 
-public func == (lhs: Company, rhs: Company) -> Bool {
-    guard lhs.subdomain == rhs.subdomain else { return false }
-    guard lhs.name == rhs.name else { return false }
-    guard lhs.logo == rhs.logo else { return false }
-    guard lhs.id == rhs.id else { return false }
-    return true
+extension Company: Equatable {
+    static public func == (lhs: Company, rhs: Company) -> Bool {
+        guard lhs.id == rhs.id else { return false }
+        guard lhs.logo == rhs.logo else { return false }
+        guard lhs.name == rhs.name else { return false }
+        guard lhs.subdomain == rhs.subdomain else { return false }
+        return true
+    }
 }
 ```
 
