@@ -10,8 +10,6 @@ build:
 	@swift build \
 		-c release \
 		--disable-sandbox \
-		-Xswiftc \
-		-static-stdlib \
 		--build-path "$(BUILDDIR)"
 
 install: build
