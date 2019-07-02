@@ -22,7 +22,7 @@ Take a look at [Example](/Example) folder.
 
 ## Requirements
 
-- Xcode 10.0+ and Swift 4.2+
+- Xcode 10.2+ and Swift 4.2+
 
 ## Installation
 
