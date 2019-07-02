@@ -6,8 +6,8 @@ import kotlinx.android.parcel.Parcelize
 /// Definition of a User
 @Parcelize
 data class User(
-    val avatar: Avatar,
-    val companies: ArrayList<Company>,
+    val avatar: com.github.hebertialmeida.modelgen.Avatar,
+    val companies: ArrayList<com.github.hebertialmeida.modelgen.models.Company>,
     val createdAt: java.util.Date,
     val currentCompanyId: Int,
     val email: String,

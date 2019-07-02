@@ -49,7 +49,7 @@ struct Schema {
     static func matchTypeFor(_ property: SchemaProperty, language: Language) throws -> String {
         // Match reference
         if let ref = property.ref {
-            return matchRefType(ref)
+            return matchRefType(ref, language: language)
         }
 
         // Match type
@@ -64,7 +64,7 @@ struct Schema {
         return try matchTypeFor(schemaType, property: property, language: language)
     }
 
-    static func matchRefType(_ ref: String) -> String {
+    static func matchRefType(_ ref: String, language: Language) -> String {
         let absolute = NSString(string: jsonAbsolutePath.description).appendingPathComponent(ref)
         let path = Path(absolute)
         let parser = JsonParser()
@@ -77,7 +77,19 @@ struct Schema {
         guard let type = parser.json["title"] as? String else {
             return ""
         }
-        return type.uppercaseFirst()
+        
+        switch language {
+        case .swift:
+            return type.uppercaseFirst()
+        case .objc:
+            return type.uppercaseFirst()
+        case .kotlin:
+            if let package = parser.json["package"] as? String {
+                return "\(package).\(type.uppercaseFirst())"
+            } else {
+                return type.uppercaseFirst()
+            }
+        }
     }
 
     private static func matchTypeFor(_ format: StringFormatType, language: Language) -> String {

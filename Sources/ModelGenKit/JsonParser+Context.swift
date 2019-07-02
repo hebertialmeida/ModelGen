@@ -75,10 +75,10 @@ extension JsonParser {
             elements[index]["keyPath"] = name.contains(".")
 
             if let ref = property.ref {
-                elements[index]["refType"] = Schema.matchRefType(ref)
+                elements[index]["refType"] = Schema.matchRefType(ref, language: language)
             }
             if let ref = property.items?.ref {
-                elements[index]["refType"] = Schema.matchRefType(ref)
+                elements[index]["refType"] = Schema.matchRefType(ref, language: language)
             }
         }
         json["properties"] = elements
