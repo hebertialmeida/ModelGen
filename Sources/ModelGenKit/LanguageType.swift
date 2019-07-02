@@ -106,14 +106,14 @@ enum ObjcType: String, LanguageType {
 }
 
 enum KotlinType: String, LanguageType {
-    case dictionary = "Map<String, %@>"
-    case array = "Array<%@>"
+    case dictionary = "HashMap<String, %@>"
+    case array = "ArrayList<%@>"
     case string = "String"
     case integer = "Int"
     case float = "Float"
     case boolean = "Boolean"
-    case uri = "Uri"
-    case date = "Date"
+    case uri = "android.net.Uri"
+    case date = "java.util.Date"
     
     static func match(baseType: BaseType) -> KotlinType {
         switch baseType {
