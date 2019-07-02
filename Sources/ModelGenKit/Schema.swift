@@ -121,6 +121,8 @@ struct Schema {
             return SwiftType.match(baseType: baseType).rawValue
         case .objc:
             return ObjcType.match(baseType: baseType).rawValue
+        case .kotlin:
+            return KotlinType.match(baseType: baseType).rawValue
         }
     }
 }

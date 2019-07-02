@@ -1,0 +1,15 @@
+package {{ spec.package }}
+
+{% if spec.description %}
+/// {{ spec.description }}
+{% endif %}
+data class {{ spec.title }}(
+{% for property in spec.properties %}
+{% if property.doc %}
+    /**
+     {{ property.doc }}
+     */
+{% endif %}
+    val {{ property.name }}: {{ property.type }}{% if not property.required %}?{% endif %}{% if not forloop.last %},{% endif %}
+{% endfor %}
+)

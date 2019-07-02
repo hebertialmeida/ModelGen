@@ -1,0 +1,5 @@
+--- 
+spec: ../Specs/
+output: ./Model/
+template: template.stencil
+language: kotlin
