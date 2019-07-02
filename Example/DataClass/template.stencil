@@ -2,6 +2,9 @@ package {{ spec.package }}
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+{% for import in spec.imports %}
+import {{ import }}
+{% endfor %}
 
 {% if spec.description %}
 /// {{ spec.description }}

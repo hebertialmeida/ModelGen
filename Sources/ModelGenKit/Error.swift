@@ -47,6 +47,7 @@ public enum SchemaError: Error, LocalizedError {
     case missingAdditionalProperties
     case missingItems
     case missingType
+    case missingPackageForType(type: String)
     case invalidSchemaType(type: String)
 
     public var errorDescription: String? {
@@ -57,6 +58,8 @@ public enum SchemaError: Error, LocalizedError {
             return "Missing property \"items\" for \"array\" type"
         case .missingType:
             return "Missing type for object"
+        case .missingPackageForType(let type):
+            return "Missing package for: \"\(type)\""
         case .invalidSchemaType(let type):
             return "Invalid type: \"\(type)\""
         }

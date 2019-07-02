@@ -71,6 +71,10 @@ enum SwiftType: String, LanguageType {
             return .date
         }
     }
+    
+    static func package(baseType: BaseType) -> [String] {
+        return []
+    }
 }
 
 enum ObjcType: String, LanguageType {
@@ -103,6 +107,10 @@ enum ObjcType: String, LanguageType {
             return .date
         }
     }
+    
+    static func package(baseType: BaseType) -> [String] {
+        return []
+    }
 }
 
 enum KotlinType: String, LanguageType {
@@ -112,8 +120,8 @@ enum KotlinType: String, LanguageType {
     case integer = "Int"
     case float = "Float"
     case boolean = "Boolean"
-    case uri = "android.net.Uri"
-    case date = "java.util.Date"
+    case uri = "Uri"
+    case date = "Date"
     
     static func match(baseType: BaseType) -> KotlinType {
         switch baseType {
@@ -133,6 +141,27 @@ enum KotlinType: String, LanguageType {
             return .uri
         case .date:
             return .date
+        }
+    }
+    
+    static func package(baseType: BaseType) -> [String] {
+        switch baseType {
+        case .dictionary:
+            return []
+        case .array:
+            return []
+        case .string:
+            return []
+        case .integer:
+            return []
+        case .float:
+            return []
+        case .boolean:
+            return []
+        case .uri:
+            return ["android.net.Uri"]
+        case .date:
+            return ["java.util.Date"]
         }
     }
 }
