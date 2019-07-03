@@ -97,15 +97,7 @@ public func parse(output: OutputDestination, template: String, lang: String, pat
         }
 
         let folderPath = Path(output.description + packagePath + Path.separator)
-        print("folderPath: \(folderPath) isDirectory: \(folderPath.isDirectory)")
-        
-        #warning("remove do catch, this is only temporary to show the error in the terminal")
-        do {
-            try folderPath.mkpath()
-        } catch {
-            print(error)
-            throw error
-        }
+        try folderPath.mkpath()
         
         let finalPath = folderPath + "\(title.uppercaseFirst() + language.fileExtension)"
         
