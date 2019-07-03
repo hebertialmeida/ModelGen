@@ -80,11 +80,6 @@ public func parse(output: OutputDestination, template: String, lang: String, pat
         let enriched = try StencilContext.enrich(context: context, parameters: [])
         let rendered = try template.render(enriched)
 
-        let out = Path(output.description)
-        guard out.isDirectory else {
-            output.write(content: rendered, onlyIfChanged: true)
-            return
-        }
         guard let title = parser.json["title"] as? String else {
             throw JsonParserError.missingTitle
         }
@@ -98,10 +93,21 @@ public func parse(output: OutputDestination, template: String, lang: String, pat
                 throw JsonParserError.missingPackage
             }
             
-            packagePath = package.replacingOccurrences(of: ".", with: Path.separator) + Path.separator
+            packagePath = package.replacingOccurrences(of: ".", with: Path.separator)
+        }
+
+        let folderPath = Path(output.description + packagePath + Path.separator)
+        print("folderPath: \(folderPath) isDirectory: \(folderPath.isDirectory)")
+        
+        #warning("remove do catch, this is only temporary to show the error in the terminal")
+        do {
+            try folderPath.mkpath()
+        } catch {
+            print(error)
+            throw error
         }
         
-        let finalPath = Path(output.description) + packagePath + "\(title.uppercaseFirst() + language.fileExtension)"
+        let finalPath = folderPath + "\(title.uppercaseFirst() + language.fileExtension)"
         
         finalOutput = .file(path: finalPath)
         finalOutput.write(content: rendered, onlyIfChanged: true)
