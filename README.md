@@ -121,7 +121,7 @@ To make it easy you can create a `.modelgen.yml`
 spec: ../Specs/
 output: ./Model/
 template: template.stencil
-language: swift # Only swift is supported right know
+language: swift
 ```
 
 And then:
