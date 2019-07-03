@@ -1,6 +1,7 @@
 {
   "title": "Company",
   "type": "object",
+  "package": "com.github.hebertialmeida.modelgen.models",
   "description": "Definition of a Company",
   "identifier": "id",
   "properties": {

@@ -1,0 +1,22 @@
+package {{ spec.package }}
+
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+{% for import in spec.imports %}
+import {{ import }}
+{% endfor %}
+
+{% if spec.description %}
+/// {{ spec.description }}
+{% endif %}
+@Parcelize
+data class {{ spec.title }}(
+{% for property in spec.properties %}
+{% if property.doc %}
+    /**
+     {{ property.doc }}
+     */
+{% endif %}
+    val {{ property.name }}: {{ property.type }}{% if not property.required %}?{% endif %}{% if not forloop.last %},{% endif %}
+{% endfor %}
+): Parcelable

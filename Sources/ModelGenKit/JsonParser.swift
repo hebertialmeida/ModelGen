@@ -80,15 +80,27 @@ public func parse(output: OutputDestination, template: String, lang: String, pat
         let enriched = try StencilContext.enrich(context: context, parameters: [])
         let rendered = try template.render(enriched)
 
-        let out = Path(output.description)
-        guard out.isDirectory else {
-            output.write(content: rendered, onlyIfChanged: true)
-            return
-        }
         guard let title = parser.json["title"] as? String else {
             throw JsonParserError.missingTitle
         }
-        let finalPath = Path(output.description) + "\(title.uppercaseFirst() + language.fileExtension)"
+        
+        let packagePath: String
+        switch language {
+        case .swift, .objc:
+            packagePath = ""
+        case .kotlin:
+            guard let package = parser.json["package"] as? String else {
+                throw JsonParserError.missingPackage
+            }
+            
+            packagePath = package.replacingOccurrences(of: ".", with: Path.separator)
+        }
+
+        let folderPath = Path(output.description + packagePath + Path.separator)
+        try folderPath.mkpath()
+        
+        let finalPath = folderPath + "\(title.uppercaseFirst() + language.fileExtension)"
+        
         finalOutput = .file(path: finalPath)
         finalOutput.write(content: rendered, onlyIfChanged: true)
     } catch let error {

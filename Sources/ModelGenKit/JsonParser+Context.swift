@@ -59,6 +59,7 @@ extension JsonParser {
             required = requiredItems
         }
 
+        var imports: [String] = []
         var elements = items
         for index in elements.indices {
             guard let name = elements[index]["name"] as? String else {
@@ -73,15 +74,18 @@ extension JsonParser {
             elements[index]["nestedObject"] = hasNestedObjects(property)
             elements[index]["required"] = required.contains(name)
             elements[index]["keyPath"] = name.contains(".")
-
+            
+            imports.append(contentsOf: try Schema.matchPackageTypeFor(property, language: language))
+            
             if let ref = property.ref {
-                elements[index]["refType"] = Schema.matchRefType(ref)
+                elements[index]["refType"] = Schema.matchRefType(ref, language: language)
             }
             if let ref = property.items?.ref {
-                elements[index]["refType"] = Schema.matchRefType(ref)
+                elements[index]["refType"] = Schema.matchRefType(ref, language: language)
             }
         }
         json["properties"] = elements
+        json["imports"] = imports.removeDuplicates()
         json["modifiedProperties"] = elements.filter({
             guard let name = $0["name"] as? String, let key = $0["key"] as? String else {
                 return false

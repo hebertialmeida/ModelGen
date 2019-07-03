@@ -1,6 +1,7 @@
 {
   "title": "Avatar",
   "type": "object",
+  "package": "com.github.hebertialmeida.modelgen",
   "properties": {
     "original": {"type": "string", "format": "uri"},
     "small": {"type": "string", "format": "uri"}

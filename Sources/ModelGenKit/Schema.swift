@@ -49,7 +49,7 @@ struct Schema {
     static func matchTypeFor(_ property: SchemaProperty, language: Language) throws -> String {
         // Match reference
         if let ref = property.ref {
-            return matchRefType(ref)
+            return matchRefType(ref, language: language)
         }
 
         // Match type
@@ -64,7 +64,7 @@ struct Schema {
         return try matchTypeFor(schemaType, property: property, language: language)
     }
 
-    static func matchRefType(_ ref: String) -> String {
+    static func matchRefType(_ ref: String, language: Language) -> String {
         let absolute = NSString(string: jsonAbsolutePath.description).appendingPathComponent(ref)
         let path = Path(absolute)
         let parser = JsonParser()
@@ -77,6 +77,7 @@ struct Schema {
         guard let type = parser.json["title"] as? String else {
             return ""
         }
+        
         return type.uppercaseFirst()
     }
 
@@ -121,6 +122,100 @@ struct Schema {
             return SwiftType.match(baseType: baseType).rawValue
         case .objc:
             return ObjcType.match(baseType: baseType).rawValue
+        case .kotlin:
+            return KotlinType.match(baseType: baseType).rawValue
+        }
+    }
+    
+    static func matchPackageTypeFor(_ property: SchemaProperty, language: Language) throws -> [String] {
+        // Match reference
+        if let ref = property.ref {
+            return try matchPackageRef(ref, language: language)
+        }
+        
+        // Match type
+        guard let type = property.type else {
+            throw SchemaError.missingType
+        }
+        
+        guard let schemaType = SchemaType(rawValue: type) else {
+            throw SchemaError.invalidSchemaType(type: type)
+        }
+        
+        return try matchPackageTypeFor(schemaType, property: property, language: language)
+    }
+    
+    private static func matchPackageRef(_ ref: String, language: Language) throws -> [String] {
+        let absolute = NSString(string: jsonAbsolutePath.description).appendingPathComponent(ref)
+        let path = Path(absolute)
+        let parser = JsonParser()
+        do {
+            try parser.parseFile(at: path)
+        } catch let error {
+            printError(error.localizedDescription, showFile: true)
+        }
+        
+        switch language {
+        case .swift:
+            return []
+        case .objc:
+            return []
+        case .kotlin:
+            guard let type = parser.json["title"] as? String else {
+                return []
+            }
+            guard let package = parser.json["package"] as? String else {
+                throw SchemaError.missingPackageForType(type: ref)
+            }
+            return ["\(package).\(type.uppercaseFirst())"]
+        }
+    }
+    
+    private static func matchPackageTypeFor(_ format: StringFormatType, language: Language) -> [String] {
+        switch format {
+        case .uri:
+            return packageTypeFor(language, baseType: .uri)
+        case .date:
+            return packageTypeFor(language, baseType: .date)
+        }
+    }
+    
+    private static func matchPackageTypeFor(_ schemaType: SchemaType, property: SchemaProperty, language: Language) throws -> [String] {
+        switch schemaType {
+        case .object:
+            guard let items = property.additionalProperties else {
+                throw SchemaError.missingAdditionalProperties
+            }
+            return try matchPackageTypeFor(items, language: language) + packageTypeFor(language, baseType: .dictionary)
+            
+        case .array:
+            guard let items = property.items else {
+                throw SchemaError.missingItems
+            }
+            return try matchPackageTypeFor(items, language: language) + packageTypeFor(language, baseType: .array)
+
+        case .string:
+            guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
+                return packageTypeFor(language, baseType: .string)
+            }
+            return matchPackageTypeFor(stringFormat, language: language)
+        case .integer:
+            return packageTypeFor(language, baseType: .integer)
+        case .number:
+            return packageTypeFor(language, baseType: .float)
+        case .boolean:
+            return packageTypeFor(language, baseType: .boolean)
+        }
+    }
+    
+    private static func packageTypeFor(_ language: Language, baseType: BaseType) -> [String] {
+        switch language {
+        case .swift:
+            return SwiftType.package(baseType: baseType)
+        case .objc:
+            return ObjcType.package(baseType: baseType)
+        case .kotlin:
+            return KotlinType.package(baseType: baseType)
         }
     }
 }

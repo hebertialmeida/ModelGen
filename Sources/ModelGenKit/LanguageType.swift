@@ -22,6 +22,7 @@ enum BaseType: Int {
 public enum Language: String {
     case swift
     case objc
+    case kotlin
 
     var fileExtension: String {
         switch self {
@@ -29,6 +30,8 @@ public enum Language: String {
             return ".swift"
         case .objc:
             return ".m"
+        case .kotlin:
+            return ".kt"
         }
     }
 }
@@ -68,6 +71,10 @@ enum SwiftType: String, LanguageType {
             return .date
         }
     }
+    
+    static func package(baseType: BaseType) -> [String] {
+        return []
+    }
 }
 
 enum ObjcType: String, LanguageType {
@@ -100,4 +107,62 @@ enum ObjcType: String, LanguageType {
             return .date
         }
     }
+    
+    static func package(baseType: BaseType) -> [String] {
+        return []
+    }
 }
+
+enum KotlinType: String, LanguageType {
+    case dictionary = "HashMap<String, %@>"
+    case array = "ArrayList<%@>"
+    case string = "String"
+    case integer = "Int"
+    case float = "Float"
+    case boolean = "Boolean"
+    case uri = "Uri"
+    case date = "Date"
+    
+    static func match(baseType: BaseType) -> KotlinType {
+        switch baseType {
+        case .dictionary:
+            return .dictionary
+        case .array:
+            return .array
+        case .string:
+            return .string
+        case .integer:
+            return .integer
+        case .float:
+            return .float
+        case .boolean:
+            return .boolean
+        case .uri:
+            return .uri
+        case .date:
+            return .date
+        }
+    }
+    
+    static func package(baseType: BaseType) -> [String] {
+        switch baseType {
+        case .dictionary:
+            return []
+        case .array:
+            return []
+        case .string:
+            return []
+        case .integer:
+            return []
+        case .float:
+            return []
+        case .boolean:
+            return []
+        case .uri:
+            return ["android.net.Uri"]
+        case .date:
+            return ["java.util.Date"]
+        }
+    }
+}
+

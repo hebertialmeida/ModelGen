@@ -13,6 +13,7 @@ public enum JsonParserError: Error, LocalizedError {
     case invalidFile(reason: String)
     case missingProperties
     case missingTitle
+    case missingPackage
 
     public var errorDescription: String? {
         switch self {
@@ -22,6 +23,8 @@ public enum JsonParserError: Error, LocalizedError {
             return "Missing property \"properties\" on json file"
         case .missingTitle:
             return "Missing property \"title\" on json file"
+        case .missingPackage:
+            return "Missing property \"package\" on json file is required in kotlin models"
         }
     }
 }
@@ -47,6 +50,7 @@ public enum SchemaError: Error, LocalizedError {
     case missingAdditionalProperties
     case missingItems
     case missingType
+    case missingPackageForType(type: String)
     case invalidSchemaType(type: String)
 
     public var errorDescription: String? {
@@ -57,6 +61,8 @@ public enum SchemaError: Error, LocalizedError {
             return "Missing property \"items\" for \"array\" type"
         case .missingType:
             return "Missing type for object"
+        case .missingPackageForType(let type):
+            return "Missing package for: \"\(type)\""
         case .invalidSchemaType(let type):
             return "Invalid type: \"\(type)\""
         }

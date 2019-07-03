@@ -1,6 +1,7 @@
 {
   "title": "User",
   "type": "object",
+  "package": "com.github.hebertialmeida.modelgen",
   "description": "Definition of a User",
   "identifier": "id",
   "properties": {
