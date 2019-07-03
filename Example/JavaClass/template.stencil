@@ -1,0 +1,46 @@
+package {{ spec.package }};
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+{% for import in spec.imports %}
+import {{ import }};
+{% endfor %}
+
+{% if spec.description %}
+/// {{ spec.description }}
+{% endif %}
+public final class {{ spec.title }} {
+
+{% for property in spec.properties %}
+{% if property.doc %}
+    /**
+     {{ property.doc }}
+     */
+{% endif %}
+    final {% if not property.primitiveType %}{% if property.required %}@NonNull {% else %}@Nullable {% endif %}{% endif %}{{ property.type }} {{ property.name }};
+{% endfor %}
+
+    public {{ spec.title }}(
+{% for property in spec.properties %}
+{% if property.doc %}
+            /**
+            {{ property.doc }}
+            */
+{% endif %}
+            {% if not property.primitiveType %}{% if property.required %}@NonNull {% else %}@Nullable {% endif %}{% endif %}{{ property.type }} {{ property.name }}{% if not forloop.last %},{% endif %}
+{% endfor %}
+            ) {
+
+{% for property in spec.properties %}
+        this.{{ property.name }} = {{ property.name }};
+{% endfor %}
+    }
+
+{% for property in spec.properties %}
+    {% if not property.primitiveType %}{% if property.required %}@NonNull{% else %}@Nullable{% endif %}{% endif %}
+    public {{ property.type }} get{{ property.name | capitalize }}() {
+        return {{ property.name }};
+    }
+
+{% endfor %}
+}

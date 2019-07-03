@@ -74,6 +74,7 @@ extension JsonParser {
             elements[index]["nestedObject"] = hasNestedObjects(property)
             elements[index]["required"] = required.contains(name)
             elements[index]["keyPath"] = name.contains(".")
+            elements[index]["primitiveType"] = try Schema.isPrimitiveTypeFor(property, language: language)
             
             imports.append(contentsOf: try Schema.matchPackageTypeFor(property, language: language))
             
