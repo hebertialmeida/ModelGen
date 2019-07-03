@@ -88,7 +88,21 @@ public func parse(output: OutputDestination, template: String, lang: String, pat
         guard let title = parser.json["title"] as? String else {
             throw JsonParserError.missingTitle
         }
-        let finalPath = Path(output.description) + "\(title.uppercaseFirst() + language.fileExtension)"
+        
+        let packagePath: String
+        switch language {
+        case .swift, .objc:
+            packagePath = ""
+        case .kotlin:
+            guard let package = parser.json["package"] as? String else {
+                throw JsonParserError.missingPackage
+            }
+            
+            packagePath = package.replacingOccurrences(of: ".", with: Path.separator) + Path.separator
+        }
+        
+        let finalPath = Path(output.description) + packagePath + "\(title.uppercaseFirst() + language.fileExtension)"
+        
         finalOutput = .file(path: finalPath)
         finalOutput.write(content: rendered, onlyIfChanged: true)
     } catch let error {
