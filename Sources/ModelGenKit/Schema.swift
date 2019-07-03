@@ -23,6 +23,13 @@ enum SchemaType: String {
 enum StringFormatType: String {
     case date // Date representation, as defined by RFC 3339, section 5.6.
     case uri  // A universal resource identifier (URI), according to RFC3986.
+
+    var asBaseType: BaseType {
+        switch self {
+        case .date: return .date
+        case .uri: return .uri
+        }
+    }
 }
 
 // MARK: Schema
@@ -49,7 +56,7 @@ struct Schema {
     static func matchTypeFor(_ property: SchemaProperty, language: Language) throws -> String {
         // Match reference
         if let ref = property.ref {
-            return matchRefType(ref, language: language)
+            return try matchRefType(ref, language: language)
         }
 
         // Match type
@@ -64,30 +71,17 @@ struct Schema {
         return try matchTypeFor(schemaType, property: property, language: language)
     }
 
-    static func matchRefType(_ ref: String, language: Language) -> String {
+    static func matchRefType(_ ref: String, language: Language) throws -> String {
         let absolute = NSString(string: jsonAbsolutePath.description).appendingPathComponent(ref)
         let path = Path(absolute)
         let parser = JsonParser()
-        do {
-            try parser.parseFile(at: path)
-        } catch let error {
-            printError(error.localizedDescription, showFile: true)
-        }
+        try parser.parseFile(at: path)
 
         guard let type = parser.json["title"] as? String else {
-            return ""
+            throw JsonParserError.missingTitle
         }
-        
-        return type.uppercaseFirst()
-    }
 
-    private static func matchTypeFor(_ format: StringFormatType, language: Language) -> String {
-        switch format {
-        case .uri:
-            return typeFor(language, baseType: .uri)
-        case .date:
-            return typeFor(language, baseType: .date)
-        }
+        return type.uppercaseFirst()
     }
 
     private static func matchTypeFor(_ schemaType: SchemaType, property: SchemaProperty, language: Language) throws -> String {
@@ -96,37 +90,26 @@ struct Schema {
             guard let items = property.additionalProperties else {
                 throw SchemaError.missingAdditionalProperties
             }
-            return String(format: typeFor(language, baseType: .dictionary), try matchTypeFor(items, language: language))
+            return String(format: language.typeFor(baseType: .dictionary), try matchTypeFor(items, language: language))
         case .array:
             guard let items = property.items else {
                 throw SchemaError.missingItems
             }
-            return String(format: typeFor(language, baseType: .array), try matchTypeFor(items, language: language))
+            return String(format: language.typeFor(baseType: .array), try matchTypeFor(items, language: language))
         case .string:
             guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
-                return typeFor(language, baseType: .string)
+                return language.typeFor(baseType: .string)
             }
-            return matchTypeFor(stringFormat, language: language)
+            return language.typeFor(baseType: stringFormat.asBaseType)
         case .integer:
-            return typeFor(language, baseType: .integer)
+            return language.typeFor(baseType: .integer)
         case .number:
-            return typeFor(language, baseType: .float)
+            return language.typeFor(baseType: .float)
         case .boolean:
-            return typeFor(language, baseType: .boolean)
+            return language.typeFor(baseType: .boolean)
         }
     }
 
-    private static func typeFor(_ language: Language, baseType: BaseType) -> String {
-        switch language {
-        case .swift:
-            return SwiftType.match(baseType: baseType).rawValue
-        case .objc:
-            return ObjcType.match(baseType: baseType).rawValue
-        case .kotlin:
-            return KotlinType.match(baseType: baseType).rawValue
-        }
-    }
-    
     static func matchPackageTypeFor(_ property: SchemaProperty, language: Language) throws -> [String] {
         // Match reference
         if let ref = property.ref {
@@ -146,76 +129,49 @@ struct Schema {
     }
     
     private static func matchPackageRef(_ ref: String, language: Language) throws -> [String] {
+        guard language == .kotlin else {
+            return []
+        }
+
         let absolute = NSString(string: jsonAbsolutePath.description).appendingPathComponent(ref)
         let path = Path(absolute)
         let parser = JsonParser()
-        do {
-            try parser.parseFile(at: path)
-        } catch let error {
-            printError(error.localizedDescription, showFile: true)
+        try parser.parseFile(at: path)
+
+        guard let type = parser.json["title"] as? String else {
+            throw JsonParserError.missingTitle
         }
-        
-        switch language {
-        case .swift:
-            return []
-        case .objc:
-            return []
-        case .kotlin:
-            guard let type = parser.json["title"] as? String else {
-                return []
-            }
-            guard let package = parser.json["package"] as? String else {
-                throw SchemaError.missingPackageForType(type: ref)
-            }
-            return ["\(package).\(type.uppercaseFirst())"]
+
+        guard let package = parser.json["package"] as? String else {
+            throw SchemaError.missingPackageForType(type: ref)
         }
+
+        return ["\(package).\(type.uppercaseFirst())"]
     }
-    
-    private static func matchPackageTypeFor(_ format: StringFormatType, language: Language) -> [String] {
-        switch format {
-        case .uri:
-            return packageTypeFor(language, baseType: .uri)
-        case .date:
-            return packageTypeFor(language, baseType: .date)
-        }
-    }
-    
+
     private static func matchPackageTypeFor(_ schemaType: SchemaType, property: SchemaProperty, language: Language) throws -> [String] {
         switch schemaType {
         case .object:
             guard let items = property.additionalProperties else {
                 throw SchemaError.missingAdditionalProperties
             }
-            return try matchPackageTypeFor(items, language: language) + packageTypeFor(language, baseType: .dictionary)
-            
+            return try matchPackageTypeFor(items, language: language) + language.packageFor(baseType: .dictionary)
         case .array:
             guard let items = property.items else {
                 throw SchemaError.missingItems
             }
-            return try matchPackageTypeFor(items, language: language) + packageTypeFor(language, baseType: .array)
-
+            return try matchPackageTypeFor(items, language: language) + language.packageFor(baseType: .array)
         case .string:
             guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
-                return packageTypeFor(language, baseType: .string)
+                return language.packageFor(baseType: .string)
             }
-            return matchPackageTypeFor(stringFormat, language: language)
+            return language.packageFor(baseType: stringFormat.asBaseType)
         case .integer:
-            return packageTypeFor(language, baseType: .integer)
+            return language.packageFor(baseType: .integer)
         case .number:
-            return packageTypeFor(language, baseType: .float)
+            return language.packageFor(baseType: .float)
         case .boolean:
-            return packageTypeFor(language, baseType: .boolean)
-        }
-    }
-    
-    private static func packageTypeFor(_ language: Language, baseType: BaseType) -> [String] {
-        switch language {
-        case .swift:
-            return SwiftType.package(baseType: baseType)
-        case .objc:
-            return ObjcType.package(baseType: baseType)
-        case .kotlin:
-            return KotlinType.package(baseType: baseType)
+            return language.packageFor(baseType: .boolean)
         }
     }
 }

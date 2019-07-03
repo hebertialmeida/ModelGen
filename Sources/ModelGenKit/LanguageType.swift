@@ -24,123 +24,119 @@ public enum Language: String {
     case objc
     case kotlin
 
-    var fileExtension: String {
+    private var languageType: LanguageType.Type {
         switch self {
         case .swift:
-            return ".swift"
+            return SwiftType.self
         case .objc:
-            return ".m"
+            return ObjcType.self
         case .kotlin:
-            return ".kt"
+            return KotlinType.self
         }
+    }
+
+    var fileExtension: String {
+        return languageType.fileExtension
+    }
+
+    func typeFor(baseType: BaseType) -> String {
+        return languageType.match(baseType: baseType)
+    }
+
+    func packageFor(baseType: BaseType) -> [String] {
+        return languageType.package(baseType: baseType)
     }
 }
 
-protocol LanguageType {
-    associatedtype OutType
-    static func match(baseType: BaseType) -> OutType
+// MARK: LanguageType
+
+protocol LanguageType: AnyObject {
+    static var fileExtension: String { get }
+    static func match(baseType: BaseType) -> String
+    static func package(baseType: BaseType) -> [String]
 }
 
-enum SwiftType: String, LanguageType {
-    case dictionary = "[AnyHashable: %@]"
-    case array = "[%@]"
-    case string = "String"
-    case integer = "Int"
-    case float = "Float"
-    case boolean = "Bool"
-    case uri = "URL"
-    case date = "Date"
-
-    static func match(baseType: BaseType) -> SwiftType {
-        switch baseType {
-        case .dictionary:
-            return .dictionary
-        case .array:
-            return .array
-        case .string:
-            return .string
-        case .integer:
-            return .integer
-        case .float:
-            return .float
-        case .boolean:
-            return .boolean
-        case .uri:
-            return .uri
-        case .date:
-            return .date
-        }
-    }
-    
+extension LanguageType {
     static func package(baseType: BaseType) -> [String] {
         return []
     }
 }
 
-enum ObjcType: String, LanguageType {
-    case dictionary = "NSDictionary<NSString *, %@>"
-    case array = "NSArray<%@> *"
-    case string = "NSString *"
-    case integer = "NSNumber *"
-    case float = "double"
-    case boolean = "BOOL"
-    case uri = "NSURL *"
-    case date = "NSDate *"
+// MARK: Language Support
 
-    static func match(baseType: BaseType) -> ObjcType {
+final class SwiftType: LanguageType {
+
+    static var fileExtension: String { return ".swift" }
+
+    static func match(baseType: BaseType) -> String {
         switch baseType {
-        case .dictionary:
-            return .dictionary
+        case .dictionary: return "[AnyHashable: %@]"
         case .array:
-            return .array
+            return "[%@]"
         case .string:
-            return .string
+            return "String"
         case .integer:
-            return .integer
+            return "Int"
         case .float:
-            return .float
+            return "Float"
         case .boolean:
-            return .boolean
+            return "Bool"
         case .uri:
-            return .uri
+            return "URL"
         case .date:
-            return .date
+            return "Date"
         }
-    }
-    
-    static func package(baseType: BaseType) -> [String] {
-        return []
     }
 }
 
-enum KotlinType: String, LanguageType {
-    case dictionary = "HashMap<String, %@>"
-    case array = "ArrayList<%@>"
-    case string = "String"
-    case integer = "Int"
-    case float = "Float"
-    case boolean = "Boolean"
-    case uri = "Uri"
-    case date = "Date"
-    
-    static func match(baseType: BaseType) -> KotlinType {
+final class ObjcType: LanguageType {
+
+    static var fileExtension: String { return ".m" }
+
+    static func match(baseType: BaseType) -> String {
         switch baseType {
         case .dictionary:
-            return .dictionary
+            return "NSDictionary<NSString *, %@>"
         case .array:
-            return .array
+            return "NSArray<%@> *"
         case .string:
-            return .string
+            return "NSString *"
         case .integer:
-            return .integer
+            return "NSNumber *"
         case .float:
-            return .float
+            return "double"
         case .boolean:
-            return .boolean
+            return "BOOL"
         case .uri:
-            return .uri
+            return "NSURL *"
         case .date:
-            return .date
+            return "NSDate *"
+        }
+    }
+}
+
+final class KotlinType: LanguageType {
+
+    static var fileExtension: String { return ".kt" }
+
+    static func match(baseType: BaseType) -> String {
+        switch baseType {
+        case .dictionary:
+            return "HashMap<String, %@>"
+        case .array:
+            return "ArrayList<%@>"
+        case .string:
+            return "String"
+        case .integer:
+            return "Int"
+        case .float:
+            return "Float"
+        case .boolean:
+            return "Boolean"
+        case .uri:
+            return "Uri"
+        case .date:
+            return "Date"
         }
     }
     

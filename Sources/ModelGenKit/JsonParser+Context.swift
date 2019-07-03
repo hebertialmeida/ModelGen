@@ -78,10 +78,10 @@ extension JsonParser {
             imports.append(contentsOf: try Schema.matchPackageTypeFor(property, language: language))
             
             if let ref = property.ref {
-                elements[index]["refType"] = Schema.matchRefType(ref, language: language)
+                elements[index]["refType"] = try Schema.matchRefType(ref, language: language)
             }
             if let ref = property.items?.ref {
-                elements[index]["refType"] = Schema.matchRefType(ref, language: language)
+                elements[index]["refType"] = try Schema.matchRefType(ref, language: language)
             }
         }
         json["properties"] = elements
