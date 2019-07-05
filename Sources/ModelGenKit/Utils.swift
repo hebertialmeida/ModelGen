@@ -109,16 +109,16 @@ extension Decodable {
 // MARK: - Remove duplicated ocurrencies from Array
 
 // https://stackoverflow.com/a/35014912/976628
-extension Array where Element:Equatable {
+extension Array where Element: Equatable {
     func removeDuplicates() -> [Element] {
         var result = [Element]()
-        
+
         for value in self {
             if result.contains(value) == false {
                 result.append(value)
             }
         }
-        
+
         return result
     }
 }

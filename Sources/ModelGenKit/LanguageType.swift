@@ -49,7 +49,7 @@ public enum Language: String {
     func packageFor(baseType: BaseType) -> [String] {
         return languageType.package(baseType: baseType)
     }
-    
+
     func isPrimitiveTypeFor(baseType: BaseType) -> Bool {
         return languageType.isPrimitiveTypeFor(baseType: baseType)
     }
@@ -68,7 +68,7 @@ extension LanguageType {
     static func package(baseType: BaseType) -> [String] {
         return []
     }
-    
+
     static func isPrimitiveTypeFor(baseType: BaseType) -> Bool {
         return false
     }
@@ -125,7 +125,7 @@ final class ObjcType: LanguageType {
             return "NSDate *"
         }
     }
-    
+
     static func isPrimitiveTypeFor(baseType: BaseType) -> Bool {
         switch baseType {
         case .dictionary:
@@ -172,7 +172,7 @@ final class KotlinType: LanguageType {
             return "Date"
         }
     }
-    
+
     static func package(baseType: BaseType) -> [String] {
         switch baseType {
         case .dictionary:
@@ -196,7 +196,7 @@ final class KotlinType: LanguageType {
 }
 
 final class JavaType: LanguageType {
-    
+
     static var fileExtension: String { return ".java" }
 
     static func match(baseType: BaseType) -> String {
@@ -240,7 +240,7 @@ final class JavaType: LanguageType {
             return ["java.util.Date"]
         }
     }
-    
+
     static func isPrimitiveTypeFor(baseType: BaseType) -> Bool {
         switch baseType {
         case .dictionary:

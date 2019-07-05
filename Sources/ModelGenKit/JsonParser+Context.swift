@@ -75,9 +75,9 @@ extension JsonParser {
             elements[index]["required"] = required.contains(name)
             elements[index]["keyPath"] = name.contains(".")
             elements[index]["primitiveType"] = try Schema.isPrimitiveTypeFor(property, language: language)
-            
+
             imports.append(contentsOf: try Schema.matchPackageTypeFor(property, language: language))
-            
+
             if let ref = property.ref {
                 elements[index]["refType"] = try Schema.matchRefType(ref, language: language)
             }
