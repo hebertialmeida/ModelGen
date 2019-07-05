@@ -86,7 +86,7 @@ public func parse(output: OutputDestination, template: String, lang: String, pat
 
         var packagePath = ""
 
-        if language == .kotlin {
+        if language == .kotlin || language == .java {
             guard let package = parser.json["package"] as? String else {
                 throw JsonParserError.missingPackage
             }

@@ -129,7 +129,7 @@ struct Schema {
     }
     
     private static func matchPackageRef(_ ref: String, language: Language) throws -> [String] {
-        guard language == .kotlin else {
+        guard language == .kotlin || language == .java else {
             return []
         }
 
@@ -172,6 +172,44 @@ struct Schema {
             return language.packageFor(baseType: .float)
         case .boolean:
             return language.packageFor(baseType: .boolean)
+        }
+    }
+    
+    static func isPrimitiveTypeFor(_ property: SchemaProperty, language: Language) throws -> Bool {
+        // Match reference
+        if property.ref != nil {
+            return false
+        }
+        
+        // Match type
+        guard let type = property.type else {
+            throw SchemaError.missingType
+        }
+        
+        guard let schemaType = SchemaType(rawValue: type) else {
+            throw SchemaError.invalidSchemaType(type: type)
+        }
+        
+        return try isPrimitiveTypeFor(schemaType, property: property, language: language)
+    }
+    
+    private static func isPrimitiveTypeFor(_ schemaType: SchemaType, property: SchemaProperty, language: Language) throws -> Bool {
+        switch schemaType {
+        case .object:
+            return language.isPrimitiveTypeFor(baseType: .dictionary)
+        case .array:
+            return language.isPrimitiveTypeFor(baseType: .array)
+        case .string:
+            guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
+                return language.isPrimitiveTypeFor(baseType: .string)
+            }
+            return language.isPrimitiveTypeFor(baseType: stringFormat.asBaseType)
+        case .integer:
+            return language.isPrimitiveTypeFor(baseType: .integer)
+        case .number:
+            return language.isPrimitiveTypeFor(baseType: .float)
+        case .boolean:
+            return language.isPrimitiveTypeFor(baseType: .boolean)
         }
     }
 }

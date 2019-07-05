@@ -24,7 +24,7 @@ public enum JsonParserError: Error, LocalizedError {
         case .missingTitle:
             return "Missing property \"title\" on json file"
         case .missingPackage:
-            return "Missing property \"package\" on json file is required in kotlin models"
+            return "Missing property \"package\" on json file is required in kotlin and java models"
         }
     }
 }
