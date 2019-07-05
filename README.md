@@ -10,7 +10,15 @@ Models are usually boilerplate code, why not generate them and forget? It will s
 
 This means that adding a property to a data object is truly a one-line change — no copy-paste required. If you want to refactor all your models it is simple as changing the template and regenerate them.
 
-## How?
+We support the following languages:
+
+- [x] Swift
+- [x] Kotlin
+- [x] Java
+
+But you can add support to any other language with few lines of code.
+
+## How it works?
 
 Unlike most of the model generators, it works with two files, the `.json` and [`.stencil`](https://github.com/kylef/Stencil) so you have full control on how you want your models to look like.
 
