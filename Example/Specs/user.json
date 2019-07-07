@@ -11,6 +11,10 @@
     "timezone": {"type": "string"},
     "current_company_id": {"type": "integer"},
     "created_at": {"type": "string", "format": "date"},
+    "favorite_companies": {
+      "type": "set",
+      "items": {"$ref": "company.json"}
+    },
     "companies": {
       "type": "array",
       "items": {"$ref": "company.json"}

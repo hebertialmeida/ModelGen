@@ -14,6 +14,7 @@ import PathKit
 enum SchemaType: String {
     case object
     case array
+    case set
     case string
     case integer
     case number
@@ -96,6 +97,11 @@ struct Schema {
                 throw SchemaError.missingItems
             }
             return String(format: language.typeFor(baseType: .array), try matchTypeFor(items, language: language))
+        case .set:
+            guard let items = property.items else {
+                throw SchemaError.missingItems
+            }
+            return String(format: language.typeFor(baseType: .set), try matchTypeFor(items, language: language))
         case .string:
             guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
                 return language.typeFor(baseType: .string)
@@ -161,6 +167,11 @@ struct Schema {
                 throw SchemaError.missingItems
             }
             return try matchPackageTypeFor(items, language: language) + language.packageFor(baseType: .array)
+        case .set:
+            guard let items = property.items else {
+                throw SchemaError.missingItems
+            }
+            return try matchPackageTypeFor(items, language: language) + language.packageFor(baseType: .set)
         case .string:
             guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
                 return language.packageFor(baseType: .string)
@@ -199,6 +210,8 @@ struct Schema {
             return language.isPrimitiveTypeFor(baseType: .dictionary)
         case .array:
             return language.isPrimitiveTypeFor(baseType: .array)
+        case .set:
+            return language.isPrimitiveTypeFor(baseType: .set)
         case .string:
             guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
                 return language.isPrimitiveTypeFor(baseType: .string)

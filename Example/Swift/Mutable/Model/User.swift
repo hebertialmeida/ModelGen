@@ -18,18 +18,20 @@ public class User: Equatable {
     public var createdAt: Date
     public var currentCompanyId: Int
     public var email: String
+    public var favoriteCompanies: Set<Company>?
     public var fullName: String
     public var id: Int
     public var timezone: String?
 
     // MARK: - Initializers
 
-    public init(avatar: Avatar, companies: [Company], createdAt: Date, currentCompanyId: Int, email: String, fullName: String, id: Int, timezone: String?) {
+    public init(avatar: Avatar, companies: [Company], createdAt: Date, currentCompanyId: Int, email: String, favoriteCompanies: Set<Company>?, fullName: String, id: Int, timezone: String?) {
         self.avatar = avatar
         self.companies = companies
         self.createdAt = createdAt
         self.currentCompanyId = currentCompanyId
         self.email = email
+        self.favoriteCompanies = favoriteCompanies
         self.fullName = fullName
         self.id = id
         self.timezone = timezone
@@ -41,6 +43,7 @@ public class User: Equatable {
         self.createdAt = try unboxer.unbox(key: "created_at", formatter: Date.serverDateFormatter())
         self.currentCompanyId = try unboxer.unbox(key: "current_company_id")
         self.email = try unboxer.unbox(key: "email")
+        self.favoriteCompanies =  unboxer.unbox(key: "favorite_companies")
         self.fullName = try unboxer.unbox(key: "full_name")
         self.id = try unboxer.unbox(key: "id")
         self.timezone =  unboxer.unbox(key: "timezone")
@@ -55,6 +58,7 @@ public func == (lhs: User, rhs: User) -> Bool {
     guard lhs.createdAt == rhs.createdAt else { return false }
     guard lhs.currentCompanyId == rhs.currentCompanyId else { return false }
     guard lhs.email == rhs.email else { return false }
+    guard lhs.favoriteCompanies == rhs.favoriteCompanies else { return false }
     guard lhs.fullName == rhs.fullName else { return false }
     guard lhs.id == rhs.id else { return false }
     guard lhs.timezone == rhs.timezone else { return false }

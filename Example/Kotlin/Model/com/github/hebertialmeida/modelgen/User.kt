@@ -14,6 +14,7 @@ data class User(
     val createdAt: Date,
     val currentCompanyId: Int,
     val email: String,
+    val favoriteCompanies: HashSet<Company>?,
     val fullName: String,
     val id: Int,
     val timezone: String?
