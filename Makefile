@@ -19,6 +19,13 @@ install: build
 uninstall:
 	@rm -rf "$(bindir)/modelgen"
 
+generate-examples: install
+	(cd Example/Java && modelgen)
+	(cd Example/Kotlin && modelgen)
+	(cd Example/Swift/Imutable && modelgen)
+	(cd Example/Swift/Mutable && modelgen)
+	(cd Example/Swift/RocketDataImutable && modelgen)
+
 clean:
 	@rm -rf .build
 
