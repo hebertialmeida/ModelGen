@@ -13,17 +13,20 @@ public class Avatar: Equatable {
     // MARK: Instance Variables
 
     public var original: URL?
+    public var photo: Data?
     public var small: URL?
 
     // MARK: - Initializers
 
-    public init(original: URL?, small: URL?) {
+    public init(original: URL?, photo: Data?, small: URL?) {
         self.original = original
+        self.photo = photo
         self.small = small
     }
 
     public init(unboxer: Unboxer) throws {
         self.original =  unboxer.unbox(key: "original")
+        self.photo =  unboxer.unbox(key: "photo")
         self.small =  unboxer.unbox(key: "small")
     }
 }
@@ -32,6 +35,7 @@ public class Avatar: Equatable {
 
 public func == (lhs: Avatar, rhs: Avatar) -> Bool {
     guard lhs.original == rhs.original else { return false }
+    guard lhs.photo == rhs.photo else { return false }
     guard lhs.small == rhs.small else { return false }
     return true
 }

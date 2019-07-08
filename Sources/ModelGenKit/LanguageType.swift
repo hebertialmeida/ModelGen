@@ -17,6 +17,7 @@ enum BaseType: Int {
     case boolean
     case uri
     case date
+    case binary
 }
 
 public enum Language: String {
@@ -97,6 +98,8 @@ final class SwiftType: LanguageType {
             return "URL"
         case .date:
             return "Date"
+        case .binary:
+            return "Data"
         }
     }
 }
@@ -123,6 +126,8 @@ final class ObjcType: LanguageType {
             return "NSURL *"
         case .date:
             return "NSDate *"
+        case .binary:
+            return "NSData *"
         }
     }
 
@@ -143,6 +148,8 @@ final class ObjcType: LanguageType {
         case .uri:
             return false
         case .date:
+            return false
+        case .binary:
             return false
         }
     }
@@ -170,6 +177,8 @@ final class KotlinType: LanguageType {
             return "Uri"
         case .date:
             return "Date"
+        case .binary:
+            return "ByteArray"
         }
     }
 
@@ -191,6 +200,8 @@ final class KotlinType: LanguageType {
             return ["android.net.Uri"]
         case .date:
             return ["java.util.Date"]
+        case .binary:
+            return []
         }
     }
 }
@@ -217,6 +228,8 @@ final class JavaType: LanguageType {
             return "Uri"
         case .date:
             return "Date"
+        case .binary:
+            return "byte[]"
         }
     }
 
@@ -238,6 +251,8 @@ final class JavaType: LanguageType {
             return ["android.net.Uri"]
         case .date:
             return ["java.util.Date"]
+        case .binary:
+            return []
         }
     }
 
@@ -258,6 +273,8 @@ final class JavaType: LanguageType {
         case .uri:
             return false
         case .date:
+            return false
+        case .binary:
             return false
         }
     }

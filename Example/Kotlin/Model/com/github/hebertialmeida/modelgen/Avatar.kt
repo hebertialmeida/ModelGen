@@ -7,5 +7,6 @@ import android.net.Uri
 @Parcelize
 data class Avatar(
     val original: Uri?,
+    val photo: ByteArray?,
     val small: Uri?
 ): Parcelable

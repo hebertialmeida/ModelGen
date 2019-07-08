@@ -13,17 +13,20 @@ public struct Avatar: Equatable {
     // MARK: Instance Variables
 
     public let original: URL?
+    public let photo: Data?
     public let small: URL?
 
     // MARK: - Initializers
 
-    public init(original: URL?, small: URL?) {
+    public init(original: URL?, photo: Data?, small: URL?) {
         self.original = original
+        self.photo = photo
         self.small = small
     }
 
     public init(unboxer: Unboxer) throws {
         self.original =  unboxer.unbox(key: "original")
+        self.photo =  unboxer.unbox(key: "photo")
         self.small =  unboxer.unbox(key: "small")
     }
 
@@ -31,15 +34,17 @@ public struct Avatar: Equatable {
 
     public struct Builder {
         public var original: URL?
+        public var photo: Data?
         public var small: URL?
 
         public init(copy: Avatar) {
             original = copy.original
+            photo = copy.photo
             small = copy.small
         }
 
         public func build() -> Avatar {
-            return Avatar(original: original, small: small)
+            return Avatar(original: original, photo: photo, small: small)
         }
     }
 }
@@ -48,6 +53,7 @@ public struct Avatar: Equatable {
 
 public func == (lhs: Avatar, rhs: Avatar) -> Bool {
     guard lhs.original == rhs.original else { return false }
+    guard lhs.photo == rhs.photo else { return false }
     guard lhs.small == rhs.small else { return false }
     return true
 }

@@ -1,5 +1,5 @@
 --- 
-spec: ../Specs/
+spec: ../../Specs/
 output: ./Model/
 template: template.stencil
-language: swift # Only swift is supported right know
+language: swift
