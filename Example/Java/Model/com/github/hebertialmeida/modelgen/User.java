@@ -6,6 +6,7 @@ import com.github.hebertialmeida.modelgen.Avatar;
 import com.github.hebertialmeida.modelgen.models.Company;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 /// Definition of a User
 public final class User {
@@ -15,6 +16,7 @@ public final class User {
     final @NonNull Date createdAt;
     final int currentCompanyId;
     final @NonNull String email;
+    final @Nullable HashSet<Company> favoriteCompanies;
     final @NonNull String fullName;
     final int id;
     final @Nullable String timezone;
@@ -25,6 +27,7 @@ public final class User {
             @NonNull Date createdAt,
             int currentCompanyId,
             @NonNull String email,
+            @Nullable HashSet<Company> favoriteCompanies,
             @NonNull String fullName,
             int id,
             @Nullable String timezone
@@ -35,6 +38,7 @@ public final class User {
         this.createdAt = createdAt;
         this.currentCompanyId = currentCompanyId;
         this.email = email;
+        this.favoriteCompanies = favoriteCompanies;
         this.fullName = fullName;
         this.id = id;
         this.timezone = timezone;
@@ -62,6 +66,11 @@ public final class User {
     @NonNull
     public String getEmail() {
         return email;
+    }
+
+    @Nullable
+    public HashSet<Company> getFavoritecompanies() {
+        return favoriteCompanies;
     }
 
     @NonNull

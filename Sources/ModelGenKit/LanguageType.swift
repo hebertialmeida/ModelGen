@@ -11,6 +11,7 @@ import Foundation
 enum BaseType: Int {
     case dictionary
     case array
+    case set
     case string
     case integer
     case float
@@ -86,6 +87,8 @@ final class SwiftType: LanguageType {
         case .dictionary: return "[AnyHashable: %@]"
         case .array:
             return "[%@]"
+        case .set:
+            return "Set<%@>"
         case .string:
             return "String"
         case .integer:
@@ -114,6 +117,8 @@ final class ObjcType: LanguageType {
             return "NSDictionary<NSString *, %@>"
         case .array:
             return "NSArray<%@> *"
+        case .set:
+            return "NSSet<%@> *"
         case .string:
             return "NSString *"
         case .integer:
@@ -136,6 +141,8 @@ final class ObjcType: LanguageType {
         case .dictionary:
             return false
         case .array:
+            return false
+        case .set:
             return false
         case .string:
             return false
@@ -165,6 +172,8 @@ final class KotlinType: LanguageType {
             return "HashMap<String, %@>"
         case .array:
             return "ArrayList<%@>"
+        case .set:
+            return "HashSet<%@>"
         case .string:
             return "String"
         case .integer:
@@ -187,6 +196,8 @@ final class KotlinType: LanguageType {
         case .dictionary:
             return []
         case .array:
+            return []
+        case .set:
             return []
         case .string:
             return []
@@ -216,6 +227,8 @@ final class JavaType: LanguageType {
             return "HashMap<String, %@>"
         case .array:
             return "ArrayList<%@>"
+        case .set:
+            return "HashSet<%@>"
         case .string:
             return "String"
         case .integer:
@@ -239,6 +252,8 @@ final class JavaType: LanguageType {
             return ["java.util.HashMap"]
         case .array:
             return ["java.util.ArrayList"]
+        case .set:
+            return ["java.util.HashSet"]
         case .string:
             return []
         case .integer:
@@ -261,6 +276,8 @@ final class JavaType: LanguageType {
         case .dictionary:
             return false
         case .array:
+            return false
+        case .set:
             return false
         case .string:
             return false

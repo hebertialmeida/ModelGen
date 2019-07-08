@@ -14,11 +14,35 @@ import PathKit
 enum SchemaType: String {
     case object
     case array
+    case set
     case string
     case integer
     case number
     case boolean
     case binary
+}
+
+extension SchemaType {
+    var asBaseType: BaseType {
+        switch self {
+        case .object:
+            return .dictionary
+        case .array:
+            return .array
+        case .set:
+            return .set
+        case .string:
+            return .string
+        case .integer:
+            return .integer
+        case .number:
+            return .float
+        case .boolean:
+            return .boolean
+        case .binary:
+            return .binary
+        }
+    }
 }
 
 enum StringFormatType: String {
@@ -91,25 +115,19 @@ struct Schema {
             guard let items = property.additionalProperties else {
                 throw SchemaError.missingAdditionalProperties
             }
-            return String(format: language.typeFor(baseType: .dictionary), try matchTypeFor(items, language: language))
-        case .array:
+            return String(format: language.typeFor(baseType: schemaType.asBaseType), try matchTypeFor(items, language: language))
+        case .array, .set:
             guard let items = property.items else {
                 throw SchemaError.missingItems
             }
-            return String(format: language.typeFor(baseType: .array), try matchTypeFor(items, language: language))
+            return String(format: language.typeFor(baseType: schemaType.asBaseType), try matchTypeFor(items, language: language))
         case .string:
             guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
-                return language.typeFor(baseType: .string)
+                return language.typeFor(baseType: schemaType.asBaseType)
             }
             return language.typeFor(baseType: stringFormat.asBaseType)
-        case .integer:
-            return language.typeFor(baseType: .integer)
-        case .number:
-            return language.typeFor(baseType: .float)
-        case .boolean:
-            return language.typeFor(baseType: .boolean)
-        case .binary:
-            return language.typeFor(baseType: .binary)
+        case .integer, .number, .boolean, .binary:
+            return language.typeFor(baseType: schemaType.asBaseType)
         }
     }
 
@@ -158,25 +176,19 @@ struct Schema {
             guard let items = property.additionalProperties else {
                 throw SchemaError.missingAdditionalProperties
             }
-            return try matchPackageTypeFor(items, language: language) + language.packageFor(baseType: .dictionary)
-        case .array:
+            return try matchPackageTypeFor(items, language: language) + language.packageFor(baseType: schemaType.asBaseType)
+        case .array, .set:
             guard let items = property.items else {
                 throw SchemaError.missingItems
             }
-            return try matchPackageTypeFor(items, language: language) + language.packageFor(baseType: .array)
+            return try matchPackageTypeFor(items, language: language) + language.packageFor(baseType: schemaType.asBaseType)
         case .string:
             guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
-                return language.packageFor(baseType: .string)
+                return language.packageFor(baseType: schemaType.asBaseType)
             }
             return language.packageFor(baseType: stringFormat.asBaseType)
-        case .integer:
-            return language.packageFor(baseType: .integer)
-        case .number:
-            return language.packageFor(baseType: .float)
-        case .boolean:
-            return language.packageFor(baseType: .boolean)
-        case .binary:
-            return language.packageFor(baseType: .binary)
+        case .integer, .number, .boolean, .binary:
+            return language.packageFor(baseType: schemaType.asBaseType)
         }
     }
 
@@ -200,23 +212,13 @@ struct Schema {
 
     private static func isPrimitiveTypeFor(_ schemaType: SchemaType, property: SchemaProperty, language: Language) throws -> Bool {
         switch schemaType {
-        case .object:
-            return language.isPrimitiveTypeFor(baseType: .dictionary)
-        case .array:
-            return language.isPrimitiveTypeFor(baseType: .array)
+        case .object, .array, .set, .integer, .number, .boolean, .binary:
+            return language.isPrimitiveTypeFor(baseType: schemaType.asBaseType)
         case .string:
             guard let format = property.format, let stringFormat = StringFormatType(rawValue: format) else {
-                return language.isPrimitiveTypeFor(baseType: .string)
+                return language.isPrimitiveTypeFor(baseType: schemaType.asBaseType)
             }
             return language.isPrimitiveTypeFor(baseType: stringFormat.asBaseType)
-        case .integer:
-            return language.isPrimitiveTypeFor(baseType: .integer)
-        case .number:
-            return language.isPrimitiveTypeFor(baseType: .float)
-        case .boolean:
-            return language.isPrimitiveTypeFor(baseType: .boolean)
-        case .binary:
-            return language.isPrimitiveTypeFor(baseType: .binary)
         }
     }
 }
