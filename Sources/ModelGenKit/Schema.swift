@@ -19,6 +19,7 @@ enum SchemaType: String {
     case integer
     case number
     case boolean
+    case binary
 }
 
 enum StringFormatType: String {
@@ -113,6 +114,8 @@ struct Schema {
             return language.typeFor(baseType: .float)
         case .boolean:
             return language.typeFor(baseType: .boolean)
+        case .binary:
+            return language.typeFor(baseType: .binary)
         }
     }
 
@@ -183,6 +186,8 @@ struct Schema {
             return language.packageFor(baseType: .float)
         case .boolean:
             return language.packageFor(baseType: .boolean)
+        case .binary:
+            return language.packageFor(baseType: .binary)
         }
     }
 
@@ -223,6 +228,8 @@ struct Schema {
             return language.isPrimitiveTypeFor(baseType: .float)
         case .boolean:
             return language.isPrimitiveTypeFor(baseType: .boolean)
+        case .binary:
+            return language.isPrimitiveTypeFor(baseType: .binary)
         }
     }
 }
