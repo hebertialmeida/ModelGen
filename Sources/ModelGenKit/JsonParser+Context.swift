@@ -86,7 +86,7 @@ extension JsonParser {
             }
         }
         json["properties"] = elements
-        json["imports"] = imports.removeDuplicates()
+        json["imports"] = imports.removeDuplicates().sorted(by: { $0 < $1 })
         json["modifiedProperties"] = elements.filter({
             guard let name = $0["name"] as? String, let key = $0["key"] as? String else {
                 return false
